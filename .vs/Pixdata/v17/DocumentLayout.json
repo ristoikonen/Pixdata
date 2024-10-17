@@ -1,0 +1,113 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\risto\\source\\repos\\Pixdata\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{FF641D5A-FFFD-47C0-8923-607C03B41B02}|Pixdata.csproj|c:\\users\\risto\\source\\repos\\pixdata\\bugeredcollection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FF641D5A-FFFD-47C0-8923-607C03B41B02}|Pixdata.csproj|solutionrelative:bugeredcollection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FF641D5A-FFFD-47C0-8923-607C03B41B02}|Pixdata.csproj|c:\\users\\risto\\source\\repos\\pixdata\\bgrdiff.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FF641D5A-FFFD-47C0-8923-607C03B41B02}|Pixdata.csproj|solutionrelative:bgrdiff.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FF641D5A-FFFD-47C0-8923-607C03B41B02}|Pixdata.csproj|c:\\users\\risto\\source\\repos\\pixdata\\bugered.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FF641D5A-FFFD-47C0-8923-607C03B41B02}|Pixdata.csproj|solutionrelative:bugered.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FF641D5A-FFFD-47C0-8923-607C03B41B02}|Pixdata.csproj|c:\\users\\risto\\source\\repos\\pixdata\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FF641D5A-FFFD-47C0-8923-607C03B41B02}|Pixdata.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FF641D5A-FFFD-47C0-8923-607C03B41B02}|Pixdata.csproj|c:\\users\\risto\\source\\repos\\pixdata\\pixletter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FF641D5A-FFFD-47C0-8923-607C03B41B02}|Pixdata.csproj|solutionrelative:pixletter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{269a02dc-6af8-11d3-bdc4-00c04f688e50}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BGRDiff.cs",
+              "DocumentMoniker": "C:\\Users\\risto\\source\\repos\\Pixdata\\BGRDiff.cs",
+              "RelativeDocumentMoniker": "BGRDiff.cs",
+              "ToolTip": "C:\\Users\\risto\\source\\repos\\Pixdata\\BGRDiff.cs",
+              "RelativeToolTip": "BGRDiff.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAgwCUAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-17T05:26:11.139Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "PixLetter.cs",
+              "DocumentMoniker": "C:\\Users\\risto\\source\\repos\\Pixdata\\PixLetter.cs",
+              "RelativeDocumentMoniker": "PixLetter.cs",
+              "ToolTip": "C:\\Users\\risto\\source\\repos\\Pixdata\\PixLetter.cs",
+              "RelativeToolTip": "PixLetter.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAADwvyAAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-17T05:13:23.659Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "BuGeRedCollection.cs",
+              "DocumentMoniker": "C:\\Users\\risto\\source\\repos\\Pixdata\\BuGeRedCollection.cs",
+              "RelativeDocumentMoniker": "BuGeRedCollection.cs",
+              "ToolTip": "C:\\Users\\risto\\source\\repos\\Pixdata\\BuGeRedCollection.cs*",
+              "RelativeToolTip": "BuGeRedCollection.cs*",
+              "ViewState": "AgIAACUAAAAAAAAAAAAQwDQAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-17T05:03:59.264Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "BuGeRed.cs",
+              "DocumentMoniker": "C:\\Users\\risto\\source\\repos\\Pixdata\\BuGeRed.cs",
+              "RelativeDocumentMoniker": "BuGeRed.cs",
+              "ToolTip": "C:\\Users\\risto\\source\\repos\\Pixdata\\BuGeRed.cs",
+              "RelativeToolTip": "BuGeRed.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAQwA4AAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-17T05:02:51.969Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\risto\\source\\repos\\Pixdata\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\risto\\source\\repos\\Pixdata\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-17T05:02:01.539Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
