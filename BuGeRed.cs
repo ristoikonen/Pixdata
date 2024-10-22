@@ -7,6 +7,43 @@ using System.Threading.Tasks;
 
 namespace Pixdata
 {
+    public class USACIIMapper
+    { 
+        //const string all_chars = @" !\"#$%&'()*+,-./\r\n0123456789:;<=>?\r\n@ABCDEFGHIJKLMNO\r\nPQRSTUVWXYZ[\\]^_\r\n`abcdefghijklmno\r\npqrstuvwxyz{|}~\r\n";
+        const string CharCol1 = @" !""""#$%&'()*+,-./";
+
+        public char GetChar_Col1(int columnIndex, int charIndex) 
+        { 
+            return CharCol1[columnIndex];
+        }
+
+        void GetString(string input, Action<string> setOutput)
+        {
+            if (!string.IsNullOrEmpty(input))
+            {
+                setOutput(input);
+            }
+        }
+
+    }
+
+
+
+    /// <summary>
+    /// USACII data sink made of BuGeRed's
+    /// </summary>
+    public struct PixelBlock
+    {
+        // 1=b4	2=b3,3=b2, 4=b1,5=col1,6=col2,71=col3
+        public BuGeRed? Pix1 { get; set; }
+        public BuGeRed? Pix2 { get; set; }
+        public BuGeRed? Pix3 { get; set; }
+        public BuGeRed? Pix4 { get; set; }
+        public BuGeRed? Pix5 { get; set; }
+        public BuGeRed? Pix6 { get; set; }
+        public BuGeRed? Pix7 { get; set; }
+    }
+
     public record BuGeRed
     {
 

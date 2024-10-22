@@ -18,7 +18,7 @@ namespace Pixdata
         public List<BuGeRed> GetBuGeRedListFromBitmap(Bitmap sourceImage)
         {
             bool isfirstpixel = true;
-            BuGeRed? firstpixel;
+            BuGeRed? firstpixel = new BuGeRed(Color.Black);
             
 
             BitmapData sourceData = sourceImage.LockBits(new Rectangle(0, 0,
@@ -43,13 +43,16 @@ namespace Pixdata
                     if (isfirstpixel && memoryStream.Position == 0)
                     {
                         firstpixel = new BuGeRed(binaryReader.ReadBytes(4));
-                        firstpixel.BGRDiff.BasePixel = firstpixel;
+                        BGRDiff bgrdiff = new BGRDiff(firstpixel, firstpixel);
+                        firstpixel.BGRDiff = bgrdiff;
                         pixelList.Add(firstpixel);
                         isfirstpixel = false;
                     }
                     else 
                     {
                         BuGeRed pixel = new BuGeRed(binaryReader.ReadBytes(4));
+                        BGRDiff bgrdiff = new BGRDiff(pixel, firstpixel);
+                        pixel.BGRDiff = bgrdiff;
                         //pixel.BGRDiff.BasePixel = firstpixel ?? new BuGeRed(Color.Black);
                         pixelList.Add(pixel);
                     }
