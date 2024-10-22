@@ -9,3 +9,10 @@ var bgrList = BGRColl.GetBuGeRedListFromBitmap(new Bitmap(@"c:\temp\ColorDiffs.b
 
 
 Console.WriteLine("Hello, World!");
+
+
+USACIIMapper mapper = new USACIIMapper();
+PixelBlock pixRow = new PixelBlock { Pix1 = new BuGeRed(new byte[] { 0, 0, 0, 1 }) };
+PixelBlock pixCol = new PixelBlock { Pix1 = new BuGeRed(new byte[] {  0, 0, 1,0 }) };
+
+mapper.GetUSACSII_Character(pixRow, pixCol);
