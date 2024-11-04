@@ -241,7 +241,10 @@ namespace Pixdata
             Alpha = barr[3];
 
         }
-
+        public static BuGeRed operator +(BuGeRed b1, BuGeRed x)
+        {
+            return new BuGeRed(new byte[] { (byte)((byte)b1.Blue + x.Blue), (byte)((byte)b1.Green + x.Green), (byte)((byte)b1.Red + x.Red), (byte)((byte)b1.Alpha - x.Alpha) });
+        }
 
 
 
