@@ -2,15 +2,29 @@
 using Pixdata;
 using System.Drawing;
 using System.Runtime.Intrinsics.X86;
+using System.Text;
 
 
 UsAsciiIMap map = new UsAsciiIMap();
+//g = 01100111
+string? gbin = map.GetBinary('g');
+
+var ix = Convert.ToInt32(gbin?[0]);
+char? sx = gbin[0];
+byte bx = Convert.ToByte(sx);
+byte[] bytesss = Encoding.ASCII.GetBytes(gbin);
+
+byte[] bytess = Convert.FromBase64String(gbin);
+
+BuGeRed g1 = new BuGeRed(new byte[] { (byte)Convert.ToInt32(gbin?[0]), (byte)Convert.ToInt32(gbin?[1]), (byte)Convert.ToInt32(gbin?[2]), (byte)Convert.ToInt32(gbin?[3]) });
+
 
 BuGeRedCollection BGRColl = new BuGeRedCollection();
 
 //Bitmap bmp = new Bitmap(@"c:\temp\ColorDiffsSmall.bmp");
 Bitmap bmp = new Bitmap(@"c:\temp\ColorDiffsEdited.bmp");
 
+var x = (byte)Convert.ToInt32(gbin?[0]);
 
 var bgrList = BGRColl.GetBuGeRedListFromBitmap(bmp); // new Bitmap(@"c:\temp\ColorDiffs.bmp"));
 Console.WriteLine(bgrList[0].Red);

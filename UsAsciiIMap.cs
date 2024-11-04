@@ -12,7 +12,8 @@ namespace Pixdata
     internal  class UsAsciiIMap
     {
         // var sevenItems = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 };0x00 0xA1,
-        Dictionary<byte, char> map = new Dictionary<byte, char>();
+
+        Dictionary<char, string> map = new Dictionary<char, string>();
         private string ToHex(int val)
         {
             return "0x" + val.ToString("X");
@@ -22,90 +23,87 @@ namespace Pixdata
         {
             return Convert.ToString(val, 2);
         }
+        
+        public string ConvertToBitString(char[] c)
+        {
+            string bitstring = "";
+            string bitstring_reversed = "";
 
+            BitArray bitarr = new BitArray(System.Text.Encoding.ASCII.GetBytes(c));
 
+            for (int counter = 0; counter < bitarr.Length; counter++)
+            {
+                bitstring += bitarr[counter] ? "1" : "0";
+                //if ((counter + 1) % 8 == 0)
+                //    Console.WriteLine();
+            }
+
+            // Convert to bool array (easier than below char array) for reverse to little indian!
+            bool[] flags = bitstring.Select(c => c == '1').ToArray();
+            Array.Reverse(flags);
+
+            //char[] charArray = bitstring.ToCharArray();
+            //Array.Reverse(charArray);
+            //bitstring_reversed = new string(charArray);
+
+            BitArray bitarr_back = new BitArray(flags);
+
+            for (int counter = 0; counter < bitarr_back.Length; counter++)
+            {
+                bitstring_reversed += bitarr_back[counter] ? "1" : "0";
+            }
+
+            return bitstring_reversed;
+        }
+
+        public char ConvertToChar(string bitstring)
+        {
+            byte[] bytes = new byte[1];
+
+            bool[] flags = bitstring.Select(c => c == '1').ToArray();
+
+            // from little indian!
+            Array.Reverse(flags);
+
+            new BitArray(flags).CopyTo(bytes, 0);
+            var charstring = System.Text.Encoding.ASCII.GetString((byte[])bytes);
+
+            return charstring.ToCharArray()[0];
+        }
 
         public UsAsciiIMap()
         {
-            byte myByte = 7;
-            // hexadecimal representation
-            string hex = myByte.ToString("X2");
-            // binary representation
-            string bin = Convert.ToString(myByte, 2);
-            Console.WriteLine("Hexadecimal: " + hex);
-            Console.WriteLine("Binary: " + bin);
-
-            PrintBits(myByte);
-
-            int x = 7;
-
-            Console.WriteLine($"Hexadecimal value of {x} is {x:X} or {x:X4}");
-            string hexString = "00110111";
-            int num = Int32.Parse(hexString, System.Globalization.NumberStyles.HexNumber);
-            Console.WriteLine(num);
-            //  0110111
-            byte[] bytes = new byte[] { 7 };
-            char cb1a = System.Text.Encoding.ASCII.GetChars(bytes)[0];
-            Console.WriteLine($"char {cb1a.ToString()} is bytes {bytes.ToString()}");
-            Console.WriteLine("    Raw: " + Convert.ToChar(7) + " -- " + System.Text.Encoding.ASCII.GetBytes("7"));
-
-            // 0011 0111
-
-            byte[] abytes = System.Text.Encoding.ASCII.GetBytes("7");
-            string abytess  = System.Text.Encoding.ASCII.GetString(abytes);
-            int ctby = System.Text.Encoding.ASCII.GetByteCount(System.Text.Encoding.ASCII.GetString(abytes));
-
-            char c1a = System.Text.Encoding.ASCII.GetChars(new byte[] { 7 })[0];
+            string bitstr = ConvertToBitString(new char[] { 'K' });
+            Console.WriteLine($"Onko 01001011: {bitstr}");
+            char kerttulainen = ConvertToChar(bitstr);
+            Console.WriteLine($"Onko K: {kerttulainen}");
 
 
-            //Will be "1100100"
-            var bitstringi = Convert.ToString(7, 2);
-            Console.WriteLine($"char {bitstringi} is char {c1a}");
-            PrintBits(System.Text.Encoding.ASCII.GetBytes("7"));
+            var allAscii = Enumerable.Range('\x1', 127).ToArray();
 
+            //var map = new Dictionary<char, string>();
 
-            string hexi = BitConverter.ToString(abytes);  //  new byte[] { Convert.ToByte('<') });
-
-            Console.WriteLine($"hexi {hexi} is byte {abytes} or {Convert.ToByte('7').ToString("x2")} ");
-
-            var bitstring = Convert.ToString(Convert.ToByte('7'), 2);
-
-            Console.WriteLine($"PrintBits {System.Text.Encoding.ASCII.GetBytes("7")}");
-            PrintBits(abytes[0]);
-            // THIS iS GOOD NOW~!
-            var byss= GetBits(System.Text.Encoding.ASCII.GetBytes("7"));
-            Console.WriteLine($"sev {System.Text.Encoding.ASCII.GetBytes("7")} or {byss}");
-            byte bit7 = 7;
-
-            
-            Console.WriteLine($"bitstring {bitstring} is bit7 {bit7} or {Convert.ToByte('7').ToString("x2")} ");
-
-            BitArray bits = new BitArray(bit7);
-
-            for (int counter = 0; counter < bits.Length; counter++)
+            foreach (int c in allAscii)
             {
-                Console.Write(bits[counter] ? "1" : "0");
-                if ((counter + 1) % 8 == 0)
-                    Console.WriteLine();
+                string bitstring = ConvertToBitString(new char[] { (char)c });
+                map.Add((char)c, bitstring);
             }
 
-
-            //'\u0110111';
-            char c1b = (char)7;
-            Console.WriteLine($"char {c1a} is byte {c1a}");
-            // (byte)
-            //string CRC_raw = "0100001";
-            // Console.WriteLine("    Raw: " + ToHex(CRC_raw) + " -- " + ToBinary(CRC_raw));
-
-            //printf("dec: %u\n", x);    // prints 512
-            //printf("hex: %x\n", x);    // prints 200
-
-            map = new Dictionary<byte, char>()
+            foreach (KeyValuePair<char, string> kvp in map)
             {
-                {   Convert.ToByte(17),'!'  }
-                //, {   Convert.ToChar("""),(byte) 0100010  }
-            };
-            // "0100001"
+                Console.WriteLine($"{kvp.Key} =  {kvp.Value}");
+            }
+            
+
+
+            decimal value = 7.3m;
+            Console.WriteLine($"Math.Ceiling: {Math.Ceiling(value)}");
+            // Math.Ceiling: 8
+            decimal value2 = 7.3m;
+            Console.WriteLine($"Math.Round: {Math.Round(value2 * 2, MidpointRounding.AwayFromZero) / 2}");
+            // Math.Round: 7.5
+
+
         }
         void PrintBits(byte b)
         {
@@ -119,6 +117,38 @@ namespace Pixdata
             }
         }
 
+        void PrintBits(BitArray bits)
+        {
+            for (int counter = 0; counter < bits.Length; counter++)
+            {
+                Console.Write(bits[counter] ? "1" : "0");
+                if ((counter + 1) % 8 == 0)
+                    Console.WriteLine();
+            }
+        }
+
+        void PrintBits(BitArray bits, bool islittleIndian)
+        {
+            if (islittleIndian)
+            {
+                for (int counter = bits.Length-1; counter >= 0; counter--)
+                {
+                    Console.Write(bits[counter] ? "1" : "0");
+                    //if ((counter + 1) % 8 == 0)
+                    //    Console.WriteLine();
+                }
+            }
+            else
+            { 
+                for (int counter = 0; counter < bits.Length; counter++)
+                {
+                    Console.Write(bits[counter] ? "1" : "0");
+                    if ((counter + 1) % 8 == 0)
+                        Console.WriteLine();
+                }
+            }
+        }
+
         void PrintBits(byte[] b)
         {
             BitArray bits = new BitArray(b);
@@ -129,9 +159,10 @@ namespace Pixdata
                 if ((counter + 1) % 8 == 0)
                     Console.WriteLine();
             }
-            byte[] bytes = new byte[1];
-            bits.CopyTo(bytes, 0);
-            Console.WriteLine(bytes[0]); 
+            //byte[] bytes = new byte[1];
+            //probelo
+            //bits.CopyTo(bytes, 0);
+            //Console.WriteLine(bytes[0]); 
         }
 
 
@@ -149,28 +180,80 @@ namespace Pixdata
             }
             byte[] bytes = new byte[1];
             bits.CopyTo(bytes, 0);
-            Console.WriteLine($"{bytes[0]}  comp: {bytes == barr}");
+            Console.WriteLine($"bytes first bit: {bytes[0]}  compare: {bytes == barr}");
             return barr;
         }
 
 
-        char? GetBinary(byte abit)
+        public string? GetBinary(char c)
         {
             byte a = 0xFE;
             byte b = 0xAA;
-            char charactor;
-            if (map.TryGetValue(abit, out charactor))
+            string? bitstr;
+            if (map.TryGetValue(c, out bitstr))
             {
-                return charactor;
+                return bitstr;
             }
-            
-            return map.FirstOrDefault(d => d.Key == abit).Value;
+            return null;
+            //return map.FirstOrDefault(d => d.Key == abit).Value;
         
         }
 
 
         //GetUSACSII_Character
 
+        /*
+         * byte myByte = 7;
+            // hexadecimal representation
+            string hex = myByte.ToString("X2");
+            // binary representation
+            string bin = Convert.ToString(myByte, 2);
+            Console.WriteLine("Hexadecimal: " + hex);
+            Console.WriteLine("Binary: " + bin);
+
+            PrintBits(myByte);
+
+            int x = 7;
+
+            Console.WriteLine($"Hexadecimal value of {x} is {x:X} or {x:X4}");
+            string hexString = "00110111";
+            int num = Int32.Parse(hexString, System.Globalization.NumberStyles.HexNumber);
+            Console.WriteLine(num);
+
+            // THIS iS GOOD NOW~!
+            string bitsy = ConvertToBitString("D".ToCharArray());
+            //BitArray bitsa = new BitArray();
+
+                    //{
+            //    {   Convert.ToByte(17),'!'  }
+            //    //, {   Convert.ToChar("""),(byte) 0100010  }
+            //};
+
+            string bitstring = Convert.ToString(Convert.ToByte('D'), 2);
+
+            var byss= GetBits(System.Text.Encoding.ASCII.GetBytes("D"));
+            var sevbytes = System.Text.Encoding.ASCII.GetBytes("D");
+            BitArray sevbytesss = new BitArray(sevbytes);
+
+            byte[] bytses = new byte[1];
+            sevbytesss.CopyTo(bytses, 0);
+            var isthis_seven = System.Text.Encoding.ASCII.GetString((byte[])bytses);
+
+            BitArray sevbytesssr = sevbytesss.RightShift(1);
+            //BitArray sevbytesssxr = BitArray.Xor(sevbytesss);
+            byte[] ba = new byte[sevbytesss.Length];
+            sevbytesss.CopyTo(ba,0);
+            var charss = System.Text.Encoding.ASCII.GetChars(ba);
+            //char[] result = Encoding.ASCII.GetString(ba).ToCharArray();
+
+            BitArray bitss = new BitArray(byss);
+            Console.WriteLine($"sev {System.Text.Encoding.ASCII.GetBytes("7")} or {byss}");
+            byte bit7 = 7;
+
+                //    byte[] bytses = new byte[1];
+                //sevbytesss.CopyTo(bytses, 0);
+                //    var isthis_seven = System.Text.Encoding.ASCII.GetString((byte[])bytses);
+        */
 
     }
 }
