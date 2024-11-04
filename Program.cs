@@ -6,15 +6,26 @@ using System.Text;
 
 
 UsAsciiIMap map = new UsAsciiIMap();
-//g = 01100111
+//g => 01100111
 string? gbin = map.GetBinary('g');
+//01100111 => g
 
-var ix = Convert.ToInt32(gbin?[0]);
-char? sx = gbin[0];
-byte bx = Convert.ToByte(sx);
-byte[] bytesss = Encoding.ASCII.GetBytes(gbin);
+//int nums = int.Parse(gbin.Substring(0,1));
+//var by1 = (byte)nums;
 
-byte[] bytess = Convert.FromBase64String(gbin);
+//var by1= (byte)Convert.ToInt32(gbin?[0]);
+//byte[] test = map.GetBytes(gbin);
+
+// WORKS NOW
+Color c = Color.Brown;
+BuGeRed bgr1 = new BuGeRed(gbin, true);
+BuGeRed bgr2 = new BuGeRed(c);
+//bgr1.Blue += by1; //(byte)Encoding.ASCII.GetBytes(gbin)[0]; ;
+
+bgr2 += bgr1;
+
+
+
 
 BuGeRed g1 = new BuGeRed(new byte[] { (byte)Convert.ToInt32(gbin?[0]), (byte)Convert.ToInt32(gbin?[1]), (byte)Convert.ToInt32(gbin?[2]), (byte)Convert.ToInt32(gbin?[3]) });
 

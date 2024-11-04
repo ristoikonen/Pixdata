@@ -218,6 +218,27 @@ namespace Pixdata
             return new byte[] { this.Blue, this.Green, this.Red, this.Alpha };
         }
 
+        public BuGeRed(string bitstring, bool firstFour)
+        {
+            if (firstFour)
+            {
+                this.Blue = (byte)int.Parse(bitstring.Substring(0, 1));
+                this.Green = (byte)int.Parse(bitstring.Substring(1, 1));
+                this.Red = (byte)int.Parse(bitstring.Substring(2, 1));
+                this.Alpha = (byte)int.Parse(bitstring.Substring(3, 1));
+            }
+            else
+            {
+                this.Blue = (byte)int.Parse(bitstring.Substring(4, 1));
+                this.Green = (byte)int.Parse(bitstring.Substring(5, 1));
+                this.Red = (byte)int.Parse(bitstring.Substring(6, 1));
+                this.Alpha = (byte)int.Parse(bitstring.Substring(7, 1));
+            }
+
+        }
+
+
+
         public override int GetHashCode()
         {
             //TODO: Change to b+g+r+a  - what happens if uint is outside int - may happen and as this is a hash:

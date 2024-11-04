@@ -23,7 +23,16 @@ namespace Pixdata
         {
             return Convert.ToString(val, 2);
         }
-        
+
+        public byte[] GetBytes(string str)
+        {
+            byte[] bytes = new byte[str.Length * sizeof(char)];
+            System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
+            return bytes;
+        }
+
+
+
         public string ConvertToBitString(char[] c)
         {
             string bitstring = "";
@@ -56,11 +65,11 @@ namespace Pixdata
             return bitstring_reversed;
         }
 
-        public char ConvertToChar(string bitstring)
+        public char ConvertToChar(string? bitstring)
         {
             byte[] bytes = new byte[1];
 
-            bool[] flags = bitstring.Select(c => c == '1').ToArray();
+            bool[] flags = bitstring?.Select(c => c == '1').ToArray();
 
             // from little indian!
             Array.Reverse(flags);
