@@ -3,6 +3,9 @@ using Pixdata;
 using System.Drawing;
 using System.Runtime.Intrinsics.X86;
 
+
+UsAsciiIMap map = new UsAsciiIMap();
+
 BuGeRedCollection BGRColl = new BuGeRedCollection();
 
 //Bitmap bmp = new Bitmap(@"c:\temp\ColorDiffsSmall.bmp");
