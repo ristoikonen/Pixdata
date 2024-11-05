@@ -24,11 +24,7 @@ BuGeRed bgr2 = new BuGeRed(c);
 
 bgr2 += bgr1;
 
-
-
-
 BuGeRed g1 = new BuGeRed(new byte[] { (byte)Convert.ToInt32(gbin?[0]), (byte)Convert.ToInt32(gbin?[1]), (byte)Convert.ToInt32(gbin?[2]), (byte)Convert.ToInt32(gbin?[3]) });
-
 
 BuGeRedCollection BGRColl = new BuGeRedCollection();
 
