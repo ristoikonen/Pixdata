@@ -65,6 +65,26 @@ namespace Pixdata
             return bitstring_reversed;
         }
 
+        public string Test(string data)
+        {
+            string s1 = "";
+
+            for (int i = 0; i < data.Length; i++)
+            {
+
+                char c = data[i];
+                byte b = (byte)c;
+
+                if (b == 0)
+                {
+                    Console.WriteLine($"Char {c} Byte {b}");
+                }
+                else s1 += c;
+            }
+            return s1;
+        }
+
+
         public char ConvertToChar(string? bitstring)
         {
             byte[] bytes = new byte[1];

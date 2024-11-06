@@ -262,6 +262,26 @@ namespace Pixdata
             Alpha = barr[3];
 
         }
+
+        public Color ToColor()
+        {
+            int alpha = Convert.ToInt32(this.Alpha);
+            int red = Convert.ToInt32(this.Blue);
+            int green = Convert.ToInt32(this.Green);
+            int blue = Convert.ToInt32(this.Blue);
+            return Color.FromArgb(alpha,red, green, blue);
+        }
+
+        public override string ToString()
+        {
+            string s1 = "";
+            int alpha = Convert.ToInt32(this.Alpha);
+            int red = Convert.ToInt32(this.Blue);
+            int green = Convert.ToInt32(this.Green);
+            int blue = Convert.ToInt32(this.Blue);
+            return string.Format($"R:{red} G:{green} B:{blue} A:{alpha}");
+        }
+
         public static BuGeRed operator +(BuGeRed b1, BuGeRed x)
         {
             return new BuGeRed(new byte[] { (byte)((byte)b1.Blue + x.Blue), (byte)((byte)b1.Green + x.Green), (byte)((byte)b1.Red + x.Red), (byte)((byte)b1.Alpha - x.Alpha) });
