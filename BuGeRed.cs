@@ -8,143 +8,7 @@ using System.Threading.Tasks;
 
 namespace Pixdata
 {
-    public class USACIIMapper
-    { 
-        //const string all_chars = @" !\"#$%&'()*+,-./\r\n0123456789:;<=>?\r\n@ABCDEFGHIJKLMNO\r\nPQRSTUVWXYZ[\\]^_\r\n`abcdefghijklmno\r\npqrstuvwxyz{|}~\r\n";
-        const string CharCol1 = @" !""""#$%&'()*+,-./";
 
-        /*
- * b4	b3	b2	b1	col1	col2	col3
-    1	0	0	0	1	0	0
-    1	0	0	1	1	1	0
-    0	0	1	0	0	1	0
-
-    Pixel1	Pixel2	Pixel3	Pixel4	Pixel5	Pixel6	Pixel7
-
-*/
-        private PixelBlock[] pixelBlockWithCharMap =
-        [
-            //new PixelBlockWithChar { Character= '0' , Row=0, Pix1 = new BuGeRed(new byte[] { 0, 0, 0, 0 }) }
-            //new PixelBlockWithChar { Row=1, Pix1 = new BuGeRed(new byte[] { 0, 0, 0, 1 }) },
-            //new PixelBlockWithChar { Row=2,  Pix1 = new BuGeRed(new byte[] { 0, 0, 1, 0 }) },
-            //new PixelBlockWithChar { Row=3,  Pix1 = new BuGeRed(new byte[] { 0, 0, 1, 1 }) },
-            //new PixelBlockWithChar { Row=4,  Pix1 = new BuGeRed(new byte[] { 0, 1, 0, 0 }) },
-            //new PixelBlockWithChar { Row=5,  Pix1 = new BuGeRed(new byte[] { 0, 1, 0, 1 }) },
-            //new PixelBlockWithChar { Row=6,  Pix1 = new BuGeRed(new byte[] { 0, 1, 1, 0 }) },
-            //new PixelBlockWithChar { Row=7,  Pix1 = new BuGeRed(new byte[] { 0, 1, 1, 1 }) },
-            //new PixelBlockWithChar { Row=8,  Pix1 = new BuGeRed(new byte[] { 1, 0, 0, 0 }) },
-            //new PixelBlockWithChar { Row=9,  Pix1 = new BuGeRed(new byte[] { 1, 0, 0, 1 }) },
-            //new PixelBlockWithChar { Row=10,  Pix1 = new BuGeRed(new byte[] { 1, 0, 1, 0 }) },
-            //new PixelBlockWithChar { Row=11,  Pix1 = new BuGeRed(new byte[] { 1, 0, 1, 1 }) },
-            //new PixelBlockWithChar { Row=12,  Pix1 = new BuGeRed(new byte[] { 1, 1, 0, 0 }) },
-            //new PixelBlockWithChar { Row=13,  Pix1 = new BuGeRed(new byte[] { 1, 1, 0, 1 }) },
-            //new PixelBlockWithChar { Row=14,  Pix1 = new BuGeRed(new byte[] { 1, 1, 1, 0 }) },
-            //new PixelBlockWithChar { Row=15,  Pix1 = new BuGeRed(new byte[] { 1, 1, 1, 1 }) }
-
-        ];
-
-
-        private PixelBlock[] pixelBlockRowMap =
-        [
-            new PixelBlock { Row=0, Pix1 = new BuGeRed(new byte[] { 0, 0, 0, 0 }) },
-            new PixelBlock { Row=1, Pix1 = new BuGeRed(new byte[] { 0, 0, 0, 1 }) },
-            new PixelBlock { Row=2,  Pix1 = new BuGeRed(new byte[] { 0, 0, 1, 0 }) },
-            new PixelBlock { Row=3,  Pix1 = new BuGeRed(new byte[] { 0, 0, 1, 1 }) },
-            new PixelBlock { Row=4,  Pix1 = new BuGeRed(new byte[] { 0, 1, 0, 0 }) },
-            new PixelBlock { Row=5,  Pix1 = new BuGeRed(new byte[] { 0, 1, 0, 1 }) },
-            new PixelBlock { Row=6,  Pix1 = new BuGeRed(new byte[] { 0, 1, 1, 0 }) },
-            new PixelBlock { Row=7,  Pix1 = new BuGeRed(new byte[] { 0, 1, 1, 1 }) },
-            new PixelBlock { Row=8,  Pix1 = new BuGeRed(new byte[] { 1, 0, 0, 0 }) },
-            new PixelBlock { Row=9,  Pix1 = new BuGeRed(new byte[] { 1, 0, 0, 1 }) },
-            new PixelBlock { Row=10,  Pix1 = new BuGeRed(new byte[] { 1, 0, 1, 0 }) },
-            new PixelBlock { Row=11,  Pix1 = new BuGeRed(new byte[] { 1, 0, 1, 1 }) },
-            new PixelBlock { Row=12,  Pix1 = new BuGeRed(new byte[] { 1, 1, 0, 0 }) },
-            new PixelBlock { Row=13,  Pix1 = new BuGeRed(new byte[] { 1, 1, 0, 1 }) },
-            new PixelBlock { Row=14,  Pix1 = new BuGeRed(new byte[] { 1, 1, 1, 0 }) },
-            new PixelBlock { Row=15,  Pix1 = new BuGeRed(new byte[] { 1, 1, 1, 1 }) }
-
-        ];
-
-
-        // Alpha does not map so it's always zero
-        private PixelBlock[] pixelBlockColumnMap =
-        [
-            new PixelBlock { Column=0,  Pix1 = new BuGeRed(new byte[] { 0, 0, 0, 0 }),  Row=0, Pix2 = new BuGeRed(new byte[] { 0, 0, 0, 0 }) },
-            new PixelBlock { Column=1,  Pix1 = new BuGeRed(new byte[] { 0, 0, 1 , 0}),  Row=0, Pix2 = new BuGeRed(new byte[] { 0, 0, 0, 0 }) },
-            new PixelBlock { Column=2,  Pix1 = new BuGeRed(new byte[] {  0, 1, 0, 0 }) ,  Row=0, Pix2 = new BuGeRed(new byte[] { 0, 0, 0, 0 }) },
-            new PixelBlock { Column=3,  Pix1 = new BuGeRed(new byte[] {  0, 1, 1, 0 }) ,  Row=0, Pix2 = new BuGeRed(new byte[] { 0, 0, 0, 0 }) },
-            new PixelBlock { Column=4,  Pix1 = new BuGeRed(new byte[] {  1, 0, 0, 0 }) ,  Row=0, Pix2 = new BuGeRed(new byte[] { 0, 0, 0, 0 }) },
-            new PixelBlock { Column=5,  Pix1 = new BuGeRed(new byte[] { 1, 0, 1 , 0}) ,  Row=0, Pix2 = new BuGeRed(new byte[] { 0, 0, 0, 0 }) },
-            new PixelBlock { Column=6,  Pix1 = new BuGeRed(new byte[] {  1, 1, 0, 0 }) ,  Row=0, Pix2 = new BuGeRed(new byte[] { 0, 0, 0, 0 }) },
-            new PixelBlock { Column=7,  Pix1 = new BuGeRed(new byte[] {  1, 1, 1, 0 }) ,  Row=0, Pix2 = new BuGeRed(new byte[] { 0, 0, 0, 0 }) },
-        ];
-
-
-        private PixelBlock[] pixelBlockMap =
-        [
-                new PixelBlock { Column=3,  Pix1 = new BuGeRed(new byte[] {  0, 1, 1, 0 }) },
-                new PixelBlock { Column=3,  Pix1 = new BuGeRed(new byte[] {  0, 1, 1, 0 }) },
-                new PixelBlock { Column=3,  Pix1 = new BuGeRed(new byte[] {  0, 1, 1, 0 }) },
-                new PixelBlock { Column=3,  Pix1 = new BuGeRed(new byte[] {  0, 1, 1, 0 }) },
-                new PixelBlock { Column=3,  Pix1 = new BuGeRed(new byte[] {  0, 1, 1, 0 }) },
-                new PixelBlock { Column=3,  Pix1 = new BuGeRed(new byte[] {  0, 1, 1, 0 }) },
-                new PixelBlock { Column=3,  Pix1 = new BuGeRed(new byte[] {  0, 1, 1, 0 }) },
-                new PixelBlock { Column=3,  Pix1 = new BuGeRed(new byte[] {  0, 1, 1, 0 }) },
-        ];
-
-
-        public char? GetChar_Col1(int columnIndex, int charIndex) 
-        {
-            switch (columnIndex)
-            {
-                case 0:
-                    return CharCol1[columnIndex];
-                case 1:
-                    break;
-                default:
-                    break;
-            }
-            return null;
-        }
-
-        void GetString(string input, Action<string> setOutput)
-        {
-            if (!string.IsNullOrEmpty(input))
-            {
-                setOutput(input);
-            }
-        }
-
-
-        public char GetUSACSII_Character(PixelBlock rowBlock, PixelBlock colBlock) 
-        {
-            var r1 = pixelBlockRowMap.Where(p => p.Equals(rowBlock));
-            var c1 = pixelBlockColumnMap.Where(p => p.Equals(colBlock) );
-
-            var r2 = pixelBlockRowMap.Where(p => Int32.IsPositive(p.Row));
-            var c2 = pixelBlockColumnMap.Where(p => p.Column > -1);
-
-            var r3 = pixelBlockRowMap.Any(p => p.Pix1 is not null && p.Pix1.Equals(rowBlock.Pix1));
-            var c3 = pixelBlockColumnMap.Any(p => p.Pix1 is not null && p.Pix1.Equals(colBlock.Pix1));
-
-
-            var rq3 = pixelBlockRowMap.FirstOrDefault(p => p.Pix1 is not null && p.Pix1 == rowBlock.Pix1);
-            var cq3 = pixelBlockColumnMap.FirstOrDefault(p => p.Pix1 is not null && p.Pix1 == colBlock.Pix1);
-
-            //PixelBlock[] pixelBlock =
-            //[
-            //    new PixelBlock { Pix1 = new BuGeRed(new byte[] { 0, 0, 0, 0 }) }
-            //    ,new PixelBlock { Pix1 = new BuGeRed(new byte[] { 0, 0, 0, 1 }) }
-            //];
-
-            var r = pixelBlockRowMap.Where(p => p.Equals(rowBlock) && Int32.IsPositive(p.Row));
-            var c = pixelBlockColumnMap.Where(p => p.Equals(colBlock) && p.Column > -1 );
-
-            // pixelBlock[index];
-            return new char();
-        }
-
-    }
 
     /// <summary>
     /// USACII data sink made of BuGeRed's with char
@@ -204,7 +68,10 @@ namespace Pixdata
             Alpha = c.A;
         }
 
-
+        /// <summary>
+        /// Copy ctor
+        /// </summary>
+        /// <param name="copyMe"></param>
         public BuGeRed(BuGeRed copyMe)
         {
 
@@ -213,11 +80,41 @@ namespace Pixdata
         }
 
 
-        public byte[] GetBytes()
+        public byte[] ToBytes()
         {
             return new byte[] { this.Blue, this.Green, this.Red, this.Alpha };
         }
 
+
+        /// <summary>
+        /// Init from string
+        /// </summary>
+        /// <param name="bitstring">Should be four or 8 chars</param>
+        /// <param name="firstFour">Is bitstring four or 8 chars</param>
+        public BuGeRed(string bitstring)
+        {
+            if (bitstring.Length == 4 || bitstring.Length == 8)
+            {
+                this.Blue = (byte)int.Parse(bitstring.Substring(0, 1));
+                this.Green = (byte)int.Parse(bitstring.Substring(1, 1));
+                this.Red = (byte)int.Parse(bitstring.Substring(2, 1));
+                this.Alpha = (byte)int.Parse(bitstring.Substring(3, 1));
+            }
+            if (bitstring.Length == 8)
+            {
+                this.Blue = (byte)int.Parse(bitstring.Substring(4, 1));
+                this.Green = (byte)int.Parse(bitstring.Substring(5, 1));
+                this.Red = (byte)int.Parse(bitstring.Substring(6, 1));
+                this.Alpha = (byte)int.Parse(bitstring.Substring(7, 1));
+            }
+        }
+
+
+        /// <summary>
+        /// Init from string
+        /// </summary>
+        /// <param name="bitstring">Should be four or 8 chars</param>
+        /// <param name="firstFour">Is bitstring four or 8 chars</param>
         public BuGeRed(string bitstring, bool firstFour)
         {
             if (firstFour)
@@ -234,7 +131,6 @@ namespace Pixdata
                 this.Red = (byte)int.Parse(bitstring.Substring(6, 1));
                 this.Alpha = (byte)int.Parse(bitstring.Substring(7, 1));
             }
-
         }
 
 
@@ -244,23 +140,23 @@ namespace Pixdata
             //TODO: Change to b+g+r+a  - what happens if uint is outside int - may happen and as this is a hash:
             // Might have odd behaviour as identical things are not regognised as such.
             if (BitConverter.IsLittleEndian)
-                Array.Reverse(this.GetBytes());
+                Array.Reverse(this.ToBytes());
 
-            return BitConverter.ToInt32(this.GetBytes(), 0);
+            return BitConverter.ToInt32(this.ToBytes(), 0);
 
             //return (int)this.Blue;
         }
 
-
+        /// <summary>
+        /// Init from byte array
+        /// </summary>
+        /// <param name="barr"></param>
         public BuGeRed(byte[] barr)
         {
-
-
             this.Blue = barr[0];
-            Green = barr[1];
-            Red = barr[2];
-            Alpha = barr[3];
-
+            this.Green = barr[1];
+            this.Red = barr[2];
+            this.Alpha = barr[3];
         }
 
         public Color ToColor()

@@ -144,7 +144,7 @@ namespace Pixdata
 
                 foreach (BuGeRed pixel in pixelList)
                 {
-                    binaryWriter.Write(pixel.GetBytes());
+                    binaryWriter.Write(pixel.ToBytes());
                 }
 
                 binaryWriter.Close();

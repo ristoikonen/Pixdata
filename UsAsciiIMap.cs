@@ -31,8 +31,6 @@ namespace Pixdata
             return bytes;
         }
 
-
-
         public string ConvertToBitString(char[] c)
         {
             string bitstring = "";
@@ -84,7 +82,6 @@ namespace Pixdata
             return s1;
         }
 
-
         public char ConvertToChar(string? bitstring)
         {
             byte[] bytes = new byte[1];
@@ -122,8 +119,6 @@ namespace Pixdata
             {
                 Console.WriteLine($"{kvp.Key} =  {kvp.Value}");
             }
-            
-
 
             decimal value = 7.3m;
             Console.WriteLine($"Math.Ceiling: {Math.Ceiling(value)}");
@@ -131,9 +126,8 @@ namespace Pixdata
             decimal value2 = 7.3m;
             Console.WriteLine($"Math.Round: {Math.Round(value2 * 2, MidpointRounding.AwayFromZero) / 2}");
             // Math.Round: 7.5
-
-
         }
+
         void PrintBits(byte b)
         {
             BitArray bits = new BitArray(b);
