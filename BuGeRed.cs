@@ -84,6 +84,8 @@ namespace Pixdata
         }
 
 
+        // TODO: fix this four/eight thingy!!
+
         /// <summary>
         /// Init from string
         /// </summary>

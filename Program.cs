@@ -6,6 +6,50 @@ using System.Text;
 
 
 UsAsciiIMap map = new UsAsciiIMap();
+
+string teststring = "Hello!";
+List<string> binaries = new List<string>(teststring.Length);
+List<BuGeRed> BuGeReds = new List<BuGeRed>();
+List<BuGeRed> BuGeRedBrowns = new List<BuGeRed>();
+
+int modi = 0;
+bool isfour = true;
+
+var xxc = teststring.ToCharArray();
+
+foreach (char ch in teststring.ToCharArray())
+{
+    string? zeroes_ones = map.GetBinary(ch);
+    binaries.Add(zeroes_ones);
+    for (int ix = 0; ix < 2; ix++)
+    {
+        isfour = (modi++ % 2) == 0;
+        BuGeReds.Add(new BuGeRed(zeroes_ones));
+    }
+}
+
+BuGeRedCollection bcc = new BuGeRedCollection();
+
+
+Color brown = Color.Brown;
+BuGeRed bgrBrownColor = new BuGeRed(brown);
+for(int ixx = 0; ixx< BuGeReds.Count; ixx++)
+{
+    BuGeRedBrowns.Add(bgrBrownColor);
+
+    BuGeRedBrowns[ixx] += BuGeReds[ixx] ;
+}
+
+
+
+//int listctt = BuGeReds.Count/2;
+int he = BuGeReds.Count / 2;
+int we = BuGeReds.Count / he;
+
+Bitmap bmpNEW = bcc.GetBitmapFromBuGeRedList(BuGeRedBrowns, we, he);
+bmpNEW.Save(@"c:\temp\bmpNEW.bmp");
+
+
 //g => 01100111
 string? zerosones = map.GetBinary('g');
 var tests= map.Test(zerosones);
