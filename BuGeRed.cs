@@ -78,8 +78,6 @@ namespace Pixdata
             this.Blue = copyMe.Blue; this.Green = copyMe.Green;
             this.Red = copyMe.Red; this.Alpha = copyMe.Alpha;
         }
-
-
         public byte[] ToBytes()
         {
             return new byte[] { this.Blue, this.Green, this.Red, this.Alpha };
@@ -177,13 +175,20 @@ namespace Pixdata
             int blue = Convert.ToInt32(this.Blue);
             return string.Format($"R:{red} G:{green} B:{blue} A:{alpha}");
         }
-
-        public static BuGeRed operator +(BuGeRed b1, BuGeRed x)
+        /*
+        public static BuGeRed operator + (BuGeRed b1, BuGeRed x)
         {
             return new BuGeRed(new byte[] { (byte)((byte)b1.Blue + x.Blue), (byte)((byte)b1.Green + x.Green), (byte)((byte)b1.Red + x.Red), (byte)((byte)b1.Alpha - x.Alpha) });
         }
+        */
+        // Note Alpha is deducted
+        // TODO: what if rgb is 255
+        public static BuGeRed operator + (BuGeRed bgr, BuGeRed addme)
+        {
 
-
+            return new BuGeRed(new byte[] { (byte)((byte)bgr.Blue + addme.Blue), (byte)((byte)bgr.Green + addme.Green), 
+                (byte)((byte)bgr.Red + addme.Red), (byte)((byte)bgr.Alpha - addme.Alpha) });
+        }
 
     }
 
