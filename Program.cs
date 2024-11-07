@@ -5,7 +5,12 @@ using System.Runtime.Intrinsics.X86;
 using System.Text;
 
 
+BuGeRedCreator cr = new BuGeRedCreator();
+Bitmap newBmp = cr.Create("ABC", Color.Beige);
+
+
 UsAsciiIMap map = new UsAsciiIMap();
+
 
 string teststring = "Hello!";
 List<string> binaries = new List<string>(teststring.Length);
