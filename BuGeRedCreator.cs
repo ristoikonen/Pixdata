@@ -11,12 +11,10 @@ namespace Pixdata
     //TODO move inside BuGeRedCollection?
     internal class BuGeRedCreator
     {
-
         public BuGeRedCreator() { }
 
         public Bitmap Create(string embed, Color color)
         {
-
             UsAsciiIMap map = new UsAsciiIMap();
             BuGeRedCollection bgrcoll = new BuGeRedCollection();
 
