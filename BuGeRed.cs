@@ -41,6 +41,37 @@ namespace Pixdata
         public int Column { get; set; }
     }
 
+
+    public struct BuGeRedWord
+    {
+        public BuGeRedWord(BuGeRed baseline)
+        {
+            this.Baseline = baseline;
+        }
+        public BuGeRed? Baseline { get; set; }
+        public BuGeRed? Pix1 { get; set; }
+        public BuGeRed? Pix2 { get; set; }
+        public BuGeRed? Pix3 { get; set; }
+        public BuGeRed? Pix4 { get; set; }
+        public BuGeRed? Pix5 { get; set; }
+        public BuGeRed? Pix6 { get; set; }
+        public BuGeRed? Pix7 { get; set; }
+        public BuGeRed? Pix8 { get; set; }
+        //int rowno;
+        //int colnono;
+        public char Character { get; set; }
+
+        public char GetCharacter ()
+        { 
+            UsAsciiIMap mapper = new UsAsciiIMap();
+            
+            //mapper.ConvertToChar()
+            return this.Character;
+        }
+        
+    }
+
+
     public record BuGeRed
     {
 
@@ -49,6 +80,7 @@ namespace Pixdata
         public byte Red;
         public byte Alpha;
         public BGRDiff BGRDiff;
+        public bool? IsFirstFour = null;
 
 
         public BuGeRed(int v, byte[] colorsWithAlpha)
@@ -76,7 +108,7 @@ namespace Pixdata
         {
 
             this.Blue = copyMe.Blue; this.Green = copyMe.Green;
-            this.Red = copyMe.Red; this.Alpha = copyMe.Alpha;
+            this.Red = copyMe.Red; this.Alpha = copyMe.Alpha; this.IsFirstFour = copyMe.IsFirstFour;
         }
         public byte[] ToBytes()
         {
@@ -106,6 +138,7 @@ namespace Pixdata
                 this.Green = (byte)int.Parse(bitstring.Substring(5, 1));
                 this.Red = (byte)int.Parse(bitstring.Substring(6, 1));
                 this.Alpha = (byte)int.Parse(bitstring.Substring(7, 1));
+                IsFirstFour = false;
             }
         }
 
@@ -115,14 +148,15 @@ namespace Pixdata
         /// </summary>
         /// <param name="bitstring">Should be four or 8 chars</param>
         /// <param name="firstFour">Is bitstring four or 8 chars</param>
-        public BuGeRed(string bitstring, bool firstFour)
+        public BuGeRed(string bitstring, bool? firstFour)
         {
-            if (firstFour)
+            if (firstFour.HasValue && firstFour.Value)
             {
                 this.Blue = (byte)int.Parse(bitstring.Substring(0, 1));
                 this.Green = (byte)int.Parse(bitstring.Substring(1, 1));
                 this.Red = (byte)int.Parse(bitstring.Substring(2, 1));
                 this.Alpha = (byte)int.Parse(bitstring.Substring(3, 1));
+                IsFirstFour = firstFour;
             }
             else
             {
@@ -130,6 +164,7 @@ namespace Pixdata
                 this.Green = (byte)int.Parse(bitstring.Substring(5, 1));
                 this.Red = (byte)int.Parse(bitstring.Substring(6, 1));
                 this.Alpha = (byte)int.Parse(bitstring.Substring(7, 1));
+                IsFirstFour = firstFour;
             }
         }
 
@@ -151,12 +186,21 @@ namespace Pixdata
         /// Init from byte array
         /// </summary>
         /// <param name="barr"></param>
+        //public BuGeRed(byte[] barr)
+        //{
+        //    this.Blue = barr[0];
+        //    this.Green = barr[1];
+        //    this.Red = barr[2];
+        //    this.Alpha = barr[3];
+        //}
+
         public BuGeRed(byte[] barr)
         {
             this.Blue = barr[0];
             this.Green = barr[1];
             this.Red = barr[2];
             this.Alpha = barr[3];
+            this.IsFirstFour = Convert.ToBoolean(barr[4]);
         }
 
         public Color ToColor()
@@ -175,7 +219,7 @@ namespace Pixdata
             int red = Convert.ToInt32(this.Blue);
             int green = Convert.ToInt32(this.Green);
             int blue = Convert.ToInt32(this.Blue);
-            return string.Format($"R:{red} G:{green} B:{blue} A:{alpha}");
+            return string.Format($"R:{red} G:{green} B:{blue} A:{alpha} IsFirstFour = {IsFirstFour}");
         }
         /*
         public static BuGeRed operator + (BuGeRed b1, BuGeRed x)
@@ -183,13 +227,13 @@ namespace Pixdata
             return new BuGeRed(new byte[] { (byte)((byte)b1.Blue + x.Blue), (byte)((byte)b1.Green + x.Green), (byte)((byte)b1.Red + x.Red), (byte)((byte)b1.Alpha - x.Alpha) });
         }
         */
-        // Note Alpha is deducted
+        // Note Alpha is deducted and IsFirstFour get its value from addme ; added BuGeRed record
         // TODO: what if rgb is 255
         public static BuGeRed operator + (BuGeRed bgr, BuGeRed addme)
         {
 
             return new BuGeRed(new byte[] { (byte)((byte)bgr.Blue + addme.Blue), (byte)((byte)bgr.Green + addme.Green), 
-                (byte)((byte)bgr.Red + addme.Red), (byte)((byte)bgr.Alpha - addme.Alpha) });
+                (byte)((byte)bgr.Red + addme.Red), (byte)((byte)bgr.Alpha - addme.Alpha), Convert.ToByte(addme.IsFirstFour) });
         }
 
     }

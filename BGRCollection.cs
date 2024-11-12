@@ -1,33 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Collections;
+
 
 namespace Pixdata
 {
-    public class BuGeRedCollection : IEnumerable//, IEnumerable<PixelBlock>
+    internal class BGRCollection
     {
-        public List<BuGeRed> pixelList { get; set; }
-        private int top = 0;
+        List<BuGeRed> pixelList = new List<BuGeRed>();
 
-        public BuGeRedCollection()
-        {
-            pixelList = new List<BuGeRed>();
-        }
-        //int width, int height
-        //Bitmap sourceImage
-        public List<BuGeRed> GetBuGeRedListFromBitmap(Bitmap sourceImage)
+        public List<BuGeRed> CreateBuGeRedListFromBitmap(Bitmap sourceImage)
         {
             bool isfirstpixel = true;
             BuGeRed? firstpixel = new BuGeRed(Color.Black);
-            
+
 
             BitmapData sourceData = sourceImage.LockBits(new Rectangle(0, 0,
                         sourceImage.Width, sourceImage.Height),
@@ -56,7 +49,7 @@ namespace Pixdata
                         pixelList.Add(firstpixel);
                         isfirstpixel = false;
                     }
-                    else 
+                    else
                     {
                         BuGeRed pixel = new BuGeRed(binaryReader.ReadBytes(4));
                         BGRDiff bgrdiff = new BGRDiff(pixel, firstpixel);
@@ -89,8 +82,8 @@ namespace Pixdata
 
         }
 
-        //List<BuGeRed> pixelList
-        public byte[] GetBytesFromBuGeRedList(int width, int height)
+
+        public byte[] GetBytesFromBuGeRedList(List<BuGeRed> pixelList, int width, int height)
         {
             Bitmap resultBitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
 
@@ -135,9 +128,7 @@ namespace Pixdata
         */
 
 
-
-        //(List<BuGeRed> pixelList,
-        public Bitmap GetBitmapFromBuGeRedList( int width, int height)
+        public Bitmap GetBitmapFromBuGeRedList(List<BuGeRed> pixelList, int width, int height)
         {
             Bitmap resultBitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
 
@@ -166,159 +157,5 @@ namespace Pixdata
             return resultBitmap;
         }
 
-        public int Count => pixelList.Count;
-        public BuGeRed this[int index]
-        {
-            get { return pixelList[index]; }
-        }
-
-        public void SetFirst(BuGeRed bgr)
-        {
-            pixelList.Insert(0, bgr);
-        }
-
-        public void Add(List<BuGeRed> list)
-        {
-            pixelList.AddRange(list);
-        }
-
-
-        public IEnumerator GetEnumerator()
-        {
-            return ((IEnumerable)pixelList).GetEnumerator();
-        }
-
-        public IEnumerable<BuGeRed> Word()
-        {
-
-            List<BuGeRed> l = new List<BuGeRed>(2);
-            //pixelList?.GetEnumerator().
-
-            if (pixelList?.GetEnumerator().Current.IsFirstFour == null)
-            {
-                yield break;
-            }
-            if (pixelList?.GetEnumerator().Current.IsFirstFour.Value != true)
-            {
-                int? nxt = pixelList?.IndexOf(pixelList?.GetEnumerator().Current);
-                var nextBGRA = pixelList[nxt.Value];
-                yield break;
-            }
-            if (pixelList?.GetEnumerator().Current.IsFirstFour.Value != false)
-            {
-                yield break;
-            }
-            /*
-            yield return {
-                pixelList.GetEnumerator().Current, 
-                        pixelList.GetEnumerator().MoveNext()};
-            */
-            //var end = start + count;
-            //for (var value = start; value < end; value++)
-            //    yield return value;
-        }
-
-
-
-        public  IEnumerable<BuGeRed> Sequence(int firstNumber, int lastNumber)
-        {
-            //Range< BuGeRed >
-            foreach (BuGeRed bgr in pixelList?[firstNumber..lastNumber])
-            {
-                if (pixelList?[firstNumber].IsFirstFour.Value == null)
-                {
-                    yield break;
-                }
-                if (pixelList?[firstNumber].IsFirstFour.Value != true)
-                {
-                    yield break;
-                }
-                yield return bgr;
-            }
-
-            //if (firstNumber <= pixelList?.Count ||
-            //    lastNumber <= pixelList?.Count )
-            //pixelList?.Take(
-        }
-
-        public IEnumerable<BuGeRed> TopN(int itemsFromTop)
-        {
-            // Return less than itemsFromTop if necessary.
-            int startIndex = itemsFromTop >= top ? 0 : top - itemsFromTop;
-
-            for (int index = top - 1; index >= startIndex; index--)
-            {
-                yield return pixelList[index];
-            }
-        }
-
-        public IEnumerable<BuGeRed> StartN(int startIndex, int itemsFromStart)
-        {
-            //int startIndex = 0;// itemsFromTop >= top ? 0 : top - itemsFromTop;
-
-            for (int index = startIndex; index >= itemsFromStart; index++)
-            {
-                yield return pixelList[index];
-            }
-        }
-
-        public BuGeRed First()
-        {
-            return pixelList[0];
-        }
-
-
-        public IEnumerator<BuGeRed> Edited()
-        {
-            foreach (BuGeRed bgr in pixelList)
-            {
-                if (bgr.IsFirstFour is not null)
-                    yield return bgr;
-                //Derived d = b as Derived;
-            }
-        }
-
-        public IEnumerable<BuGeRed> GetFirstSequence()
-        {
-            //Range< BuGeRed >
-            foreach (BuGeRed bgr in pixelList)
-            {
-                if (bgr != null && bgr.IsFirstFour != null)
-                {
-
-                    if ( bgr.IsFirstFour.Value)
-                    {
-                        yield return bgr;
-                    }
-                }
-                yield break;
-            }
-
-            //if (firstNumber <= pixelList?.Count ||
-            //    lastNumber <= pixelList?.Count )
-            //pixelList?.Take(
-        }
-
-
-        //object IEnumerator.Current
-        //=> pixelList.Data;
-
-        //IEnumerator<PixelBlock> IEnumerable<PixelBlock>.GetEnumerator()
-        //{
-        //    while (pixelList < 10)
-        //        yield return index++;
-
-        //    foreach (BuGeRed bgr pixelList.GetEnumerator()
-        //    yield return "object";
-        //    yield return "byte";
-
-        //    foreach (BuGeRed bgr in ((IEnumerable)pixelList).GetEnumerator())
-        //    { 
-
-        //    }
-        //    throw new NotImplementedException();
-        //}
     }
 }
-
-

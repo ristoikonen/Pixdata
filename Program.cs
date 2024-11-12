@@ -5,11 +5,67 @@ using System.Runtime.Intrinsics.X86;
 using System.Text;
 
 
-BuGeRedCreator cr = new BuGeRedCreator();
+UsAsciiIMap map = new UsAsciiIMap();
+BuGeRedCreator cr = new BuGeRedCreator("ABC", Color.Beige);
+var msgList = cr.CreateMessage();
+var bitmap = cr.CreateBitmap(msgList, 40, 5);
+bitmap.Save(@"c:\temp\bmpABC.bmp");
+
 Bitmap newBmp = cr.Create("ABC", Color.Beige);
 
+BuGeRedCollection bcol = new BuGeRedCollection();
 
-UsAsciiIMap map = new UsAsciiIMap();
+BuGeRed bgrBrowne = new BuGeRed(Color.Brown);
+BuGeRed bgrBrowneEdited = new BuGeRed(Color.Brown);
+BuGeRed bgrBrowneEditedSec = new BuGeRed(Color.Brown);
+string? zeros_ones = map.GetBinary('A');
+BuGeRed bgrA = new BuGeRed(zeros_ones, true);
+BuGeRed bgrAsec = new BuGeRed(zeros_ones, false);
+
+// we can add one to another, except 255 valyues!  Alpha is minused.
+bgrBrowneEdited += bgrA;
+bgrBrowneEditedSec += bgrAsec;
+
+
+List<BuGeRed> newpiclist2 = new List<BuGeRed>();
+newpiclist2.Add(bgrBrowne);
+newpiclist2.Add(bgrBrowneEdited); newpiclist2.Add(bgrBrowneEditedSec); 
+//newpiclist2.Add(bgrBrowne); newpiclist2.Add(bgrBrowne); newpiclist2.Add(bgrBrowne); 
+//newpiclist2.Add(bgrBrowne); newpiclist2.Add(bgrBrowne); newpiclist2.Add(bgrBrowne);
+
+//int h = newpiclist2.Count / 2;
+//int w = newpiclist2.Count / h;
+
+bcol.pixelList = newpiclist2;
+
+foreach (BuGeRed buu in bcol.Sequence(1,2))
+{
+    Console.WriteLine(buu.ToString());
+
+}
+
+foreach (BuGeRed buu in bcol)
+{
+    Console.WriteLine(  buu.ToString());
+
+}
+
+
+Bitmap bmpSmalle = bcol.GetBitmapFromBuGeRedList(newpiclist2.Count / (newpiclist2.Count / 2), newpiclist2.Count / 2);
+bmpSmalle.Save(@"c:\temp\bmpSmall.bmp");
+
+
+
+Console.WriteLine("Hello, World!");
+
+USACIIMapper mapper = new USACIIMapper();
+PixelBlock pixRow = new PixelBlock { Pix1 = new BuGeRed(new byte[] { 0, 0, 0, 1 }) };
+PixelBlock pixCol = new PixelBlock { Pix1 = new BuGeRed(new byte[] { 0, 0, 1, 0 }) };
+mapper.GetUSACSII_Character(pixRow, pixCol);
+
+
+
+/*
 
 
 string teststring = "Hello!";
@@ -33,6 +89,9 @@ foreach (char ch in teststring.ToCharArray())
     }
 }
 
+
+
+
 BuGeRedCollection bcc = new BuGeRedCollection();
 
 
@@ -50,8 +109,8 @@ for(int ixx = 0; ixx< BuGeReds.Count; ixx++)
 //int listctt = BuGeReds.Count/2;
 int he = BuGeReds.Count / 2;
 int we = BuGeReds.Count / he;
-
-Bitmap bmpNEW = bcc.GetBitmapFromBuGeRedList(BuGeRedBrowns, we, he);
+bcc.pixelList = BuGeRedBrowns;
+Bitmap bmpNEW = bcc.GetBitmapFromBuGeRedList( we, he);
 bmpNEW.Save(@"c:\temp\bmpNEW.bmp");
 
 
@@ -116,8 +175,8 @@ int w = listct / h;
 
 
 BuGeRedCollection bc = new BuGeRedCollection();
-
-Bitmap bmpSmall = bc.GetBitmapFromBuGeRedList(newpiclist, w, h);
+bc.pixelList = newpiclist;
+Bitmap bmpSmall = bc.GetBitmapFromBuGeRedList( w, h);
 bmpSmall.Save(@"c:\temp\bmpSmall.bmp");
 
 // ---------------------------
@@ -208,3 +267,5 @@ USACIIMapper mapper = new USACIIMapper();
 PixelBlock pixRow = new PixelBlock { Pix1 = new BuGeRed(new byte[] { 0, 0, 0, 1 }) };
 PixelBlock pixCol = new PixelBlock { Pix1 = new BuGeRed(new byte[] {  0, 0, 1,0 }) };
 mapper.GetUSACSII_Character(pixRow, pixCol);
+
+*/
