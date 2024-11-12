@@ -81,4 +81,25 @@ namespace Pixdata
         }
 
     }
+
+
+    public record BGRWord
+    {
+
+        public BuGeRed First { get; set; }
+        public BuGeRed Second { get; set; }
+
+        public BGRWord(BuGeRed first, BuGeRed second)
+        {
+            this.First = first;
+            this.Second = second;
+        }
+
+     
+
+    }
+
+
+
+
 }

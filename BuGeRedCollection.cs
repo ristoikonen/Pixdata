@@ -25,9 +25,10 @@ namespace Pixdata
         //Bitmap sourceImage
         public List<BuGeRed> GetBuGeRedListFromBitmap(Bitmap sourceImage)
         {
+            const int bits_per_pixel = 4;
             bool isfirstpixel = true;
             BuGeRed? firstpixel = new BuGeRed(Color.Black);
-            
+            int modi = 0; bool isfour = true;
 
             BitmapData sourceData = sourceImage.LockBits(new Rectangle(0, 0,
                         sourceImage.Width, sourceImage.Height),
@@ -39,30 +40,54 @@ namespace Pixdata
             Marshal.Copy(sourceData.Scan0, sourceBuffer, 0, sourceBuffer.Length);
             sourceImage.UnlockBits(sourceData);
 
-            pixelList = new List<BuGeRed>(sourceBuffer.Length / 4);
+            pixelList = new List<BuGeRed>(sourceBuffer.Length / bits_per_pixel);
 
             using (MemoryStream memoryStream = new MemoryStream(sourceBuffer))
             {
                 memoryStream.Position = 0;
                 BinaryReader binaryReader = new BinaryReader(memoryStream);
 
-                while (memoryStream.Position + 4 <= memoryStream.Length)
+                while (memoryStream.Position + bits_per_pixel <= memoryStream.Length)
                 {
                     if (isfirstpixel && memoryStream.Position == 0)
                     {
                         firstpixel = new BuGeRed(binaryReader.ReadBytes(4));
                         BGRDiff bgrdiff = new BGRDiff(firstpixel, firstpixel);
                         firstpixel.BGRDiff = bgrdiff;
+                        //firstpixel.IsFirstFour = true;
                         pixelList.Add(firstpixel);
                         isfirstpixel = false;
                     }
                     else 
                     {
-                        BuGeRed pixel = new BuGeRed(binaryReader.ReadBytes(4));
-                        BGRDiff bgrdiff = new BGRDiff(pixel, firstpixel);
-                        pixel.BGRDiff = bgrdiff;
-                        //pixel.BGRDiff.BasePixel = firstpixel ?? new BuGeRed(Color.Black);
-                        pixelList.Add(pixel);
+                        //string? zeroes_ones = map.GetBinary(ch) ?? throw new InvalidOperationException($"Cant convert char {ch} to a string of 0's and 1's");
+                        // we have 8 as "11110000" so we need to create 2 BuGeReds
+                        for (int ix = 0; ix < 2; ix++)
+                        {
+
+                            if (memoryStream.Position >= memoryStream.Length)
+                            {
+                                Console.WriteLine(memoryStream.Position);
+                                break;
+
+                            }
+                            //int readix = isfour ? 0 : bits_per_pixel;
+
+                            // is it start or end part
+                            isfour = (modi++ % 2) == 0;
+                            //add message to base color
+                           // BuGeRed based_on_base = BaseColor;
+                           // based_on_base += new BuGeRed(zeroes_ones, isfour);
+                           // BuGeRedMessage.Add(based_on_base);
+
+                            BuGeRed pixel = new BuGeRed(binaryReader.ReadBytes(bits_per_pixel), isfour);
+                            BGRDiff bgrdiff = new BGRDiff(pixel, firstpixel);
+                            pixel.BGRDiff = bgrdiff;
+                            //pixel.BGRDiff.BasePixel = firstpixel ?? new BuGeRed(Color.Black);
+                            pixelList.Add(pixel);
+                        }
+
+
                     }
 
                 }
@@ -192,7 +217,8 @@ namespace Pixdata
         {
 
             List<BuGeRed> l = new List<BuGeRed>(2);
-            //pixelList?.GetEnumerator().
+
+            var curr = pixelList?.GetEnumerator().Current;
 
             if (pixelList?.GetEnumerator().Current.IsFirstFour == null)
             {
@@ -202,7 +228,7 @@ namespace Pixdata
             {
                 int? nxt = pixelList?.IndexOf(pixelList?.GetEnumerator().Current);
                 var nextBGRA = pixelList[nxt.Value];
-                yield break;
+                yield return pixelList[nxt.Value];
             }
             if (pixelList?.GetEnumerator().Current.IsFirstFour.Value != false)
             {

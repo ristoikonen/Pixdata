@@ -112,5 +112,32 @@ namespace Pixdata
             return new char();
         }
 
+
+        public char GetUSACSII_Character(BuGeRedCollection BuGeReds)
+        {
+            var firstpix = BuGeReds.First;
+
+
+            foreach (BuGeRed buu in BuGeReds.Word())
+            {
+                Console.WriteLine(buu.ToString());
+
+            }
+
+
+            
+
+            foreach (BuGeRed buu in BuGeReds.Sequence(1, 2))
+            {
+                Console.WriteLine(buu.ToString());
+
+            }
+
+            
+
+            return new char();
+        }
+
+
     }
 }

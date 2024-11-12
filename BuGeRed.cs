@@ -82,15 +82,16 @@ namespace Pixdata
         public BGRDiff BGRDiff;
         public bool? IsFirstFour = null;
 
-
-        public BuGeRed(int v, byte[] colorsWithAlpha)
+        /*
+        public BuGeRed(byte[] colorsWithAlpha,bool? firstFour)
         {
             Blue = colorsWithAlpha[0];
             Green = colorsWithAlpha[1];
             Red = colorsWithAlpha[2];
             Alpha = colorsWithAlpha[3];
+            IsFirstFour = firstFour;
         }
-
+        */
 
         public BuGeRed(Color c)
         {
@@ -194,14 +195,25 @@ namespace Pixdata
         //    this.Alpha = barr[3];
         //}
 
+        public BuGeRed(byte[] barr, bool? firstFour)
+        {
+            this.Blue = barr[0];
+            this.Green = barr[1];
+            this.Red = barr[2];
+            this.Alpha = barr[3];
+            IsFirstFour = firstFour;
+        }
+
         public BuGeRed(byte[] barr)
         {
             this.Blue = barr[0];
             this.Green = barr[1];
             this.Red = barr[2];
             this.Alpha = barr[3];
-            this.IsFirstFour = Convert.ToBoolean(barr[4]);
+            //HACK, problem!!
+            //this.IsFirstFour = Convert.ToBoolean(barr[4]);
         }
+
 
         public Color ToColor()
         {

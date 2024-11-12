@@ -5,11 +5,31 @@ using System.Runtime.Intrinsics.X86;
 using System.Text;
 
 
+//TODO: unite maps
 UsAsciiIMap map = new UsAsciiIMap();
+USACIIMapper asciimapper = new USACIIMapper();
+
+//TODO: streamline BuGeRedCollection, note that BuGeRedCollection's pixelList is read in GetBuGeRedListFromBitmap
+
+BuGeRedCollection BGRColl = new BuGeRedCollection();
+
+var bgrList = BGRColl.GetBuGeRedListFromBitmap(new Bitmap(@"c:\temp\bmpABC.bmp"));
+
+var chrr = asciimapper.GetUSACSII_Character(BGRColl);
+
+
+Console.WriteLine(bgrList[0].Red);
+Console.WriteLine(bgrList[1].Red);
+Console.WriteLine(bgrList[2].Red);
+//bgrList[0].Red = (byte)(bgrList[0].Red-1);
+//Console.WriteLine(bgrList[0].Red);
+
 BuGeRedCreator cr = new BuGeRedCreator("ABC", Color.Beige);
 var msgList = cr.CreateMessage();
 var bitmap = cr.CreateBitmap(msgList, 40, 5);
 bitmap.Save(@"c:\temp\bmpABC.bmp");
+
+
 
 Bitmap newBmp = cr.Create("ABC", Color.Beige);
 

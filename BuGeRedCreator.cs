@@ -20,21 +20,20 @@ namespace Pixdata
         public BuGeRedReader(Bitmap bmp) {
             BuGeRedCollection BGRColl = new BuGeRedCollection();
             var bgrList = BGRColl.GetBuGeRedListFromBitmap(bmp); // new Bitmap(@"c:\temp\ColorDiffs.bmp"));
-            Console.WriteLine(bgrList[0].Red);
-            Console.WriteLine(bgrList[1].Red);
-            Console.WriteLine(bgrList[2].Red);
-            //bgrList[0].Red = (byte)(bgrList[0].Red-1);
-            //Console.WriteLine(bgrList[0].Red);
+
 
             int i = 256;
             byte[] buffer = BitConverter.GetBytes(i);
             byte[] buffer3 = BitConverter.GetBytes(System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(i));
 
             USACIIMapper mapper = new USACIIMapper();
-            PixelBlock pixRow = new PixelBlock { Pix1 = new BuGeRed(new byte[] { 0, 0, 0, 1 }) };
-            PixelBlock pixCol = new PixelBlock { Pix1 = new BuGeRed(new byte[] { 0, 0, 1, 0 }) };
-            mapper.GetUSACSII_Character(pixRow, pixCol);
+            //PixelBlock pixRow = new PixelBlock { Pix1 = new BuGeRed(new byte[] { 0, 0, 0, 1 }) };
+            //PixelBlock pixCol = new PixelBlock { Pix1 = new BuGeRed(new byte[] { 0, 0, 1, 0 }) };
+            //mapper.GetUSACSII_Character(pixRow, pixCol);
+            //mapper.GetUSACSII_Character
         }
+
+
 
     }
 
@@ -43,16 +42,70 @@ namespace Pixdata
 
         private string embedMessage;
         private Color color;
-        BuGeRed bgrcolor;
+        BuGeRed BaseColor;
 
         public BuGeRedCreator(string embedMessage, Color color) 
         { 
             this.embedMessage = embedMessage;
             this.color = color;
-            this.bgrcolor = new BuGeRed(color);
+            this.BaseColor = new BuGeRed(color);
         }
+
+
+        public List<BuGeRed> CreateMessage()//string embed, Color color)
+        {
+            const int bits_per_pixel = 4;
+            UsAsciiIMap map = new UsAsciiIMap();
+            BuGeRedCollection bgrcoll = new BuGeRedCollection();
+
+            List<string> binaries = new List<string>();
+            List<BuGeRed> BuGeRedMessage = new List<BuGeRed>();
+            List<BuGeRed> BuGeRedBase = new List<BuGeRed>();
+
+            int modi = 0; bool isfour = true;
+
+
+            // Create colors for message
+            foreach(char ch in embedMessage.ToCharArray())
+            {
+                string? zeroes_ones = map.GetBinary(ch) ?? throw new InvalidOperationException($"Cant convert char {ch} to a string of 0's and 1's");
+                // we have 8 as "11110000" so we need to create 2 BuGeReds
+                for (int ix = 0; ix < 2; ix++)
+                {
+                    //int readix = isfour ? 0 : bits_per_pixel;
+                    //var part_of_bitstring = zeroes_ones.Substring(readix, bits_per_pixel);
+
+                    // is it start or end part
+                    isfour = (modi++ % 2) == 0;
+                    //add message to base color
+                    BuGeRed based_on_base = BaseColor;
+                    based_on_base += new BuGeRed(zeroes_ones, isfour);
+                    BuGeRedMessage.Add(based_on_base);
+                }
+            }
+
+            return BuGeRedMessage;
+
+
+
+        }
+
+
         /*
          * 
+         * 
+         *             /*
+            foreach (char ch in embedMessage.ToCharArray())
+            {
+                string? zeroes_ones = map.GetBinary(ch) ?? throw new InvalidOperationException($"Cant convert char {ch} to a string of 0's and 1's");
+                for (int ix = 0; ix < 2; ix++)
+                {
+                    isfour = (modi++ % 2) == 0;
+                    BuGeRedMessage.Add(new BuGeRed(zeroes_ones));
+                }
+            }
+            */
+        /*
         public List<BuGeRed> CreateMessage()//string embed, Color color)
         {
             UsAsciiIMap map = new UsAsciiIMap();
@@ -76,12 +129,9 @@ namespace Pixdata
                 }
             }
             return BuGeRedMessage;
-
-
-
         }
-        
         */
+        
 
         // Create final Bitmap where; first BuGeRed is of base color, followed by message colors, rest is base color
         public Bitmap? CreateBitmap(List<BuGeRed> messageColors, int height, int width)
@@ -111,7 +161,7 @@ namespace Pixdata
                 List<BuGeRed> filling = new List<BuGeRed>(fillcount);
                 //for (int i = 0; i < fillcount; i++)
                 //{
-                    filling.AddRange(Enumerable.Repeat(bgrcolor, fillcount));
+                    filling.AddRange(Enumerable.Repeat(BaseColor, fillcount));
                 //}
                 // Fill rest with base color
                 bgrcoll.Add(filling);
@@ -134,7 +184,7 @@ namespace Pixdata
             List<BuGeRed> BuGeRedBrowns = new List<BuGeRed>();
             int modi = 0; bool isfour = true;
 
-            fore ach (char ch in embed.ToCharArray())
+            foreach (char ch in embed.ToCharArray())
             {
                 string? zeroes_ones = map.GetBinary(ch) ?? throw new InvalidOperationException($"Cant convert char {ch} to a string of 0's and 1's");
                 for (int ix = 0; ix< 2; ix++)
