@@ -21,7 +21,6 @@ namespace Pixdata
             BuGeRedCollection BGRColl = new BuGeRedCollection();
             var bgrList = BGRColl.GetBuGeRedListFromBitmap(bmp); // new Bitmap(@"c:\temp\ColorDiffs.bmp"));
 
-
             int i = 256;
             byte[] buffer = BitConverter.GetBytes(i);
             byte[] buffer3 = BitConverter.GetBytes(System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(i));
@@ -79,16 +78,36 @@ namespace Pixdata
                     isfour = (modi++ % 2) == 0;
                     //add message to base color
                     BuGeRed based_on_base = BaseColor;
+                    //TODO: fix operators based_on_base
                     based_on_base += new BuGeRed(zeroes_ones, isfour);
+                    based_on_base.IsFirstFour = isfour;
                     BuGeRedMessage.Add(based_on_base);
                 }
             }
 
             return BuGeRedMessage;
-
-
-
         }
+
+        public char ReadMessage(BuGeRedCollection BuGeReds)
+        {
+            //var firstpix = BuGeReds.First;
+            
+
+            foreach (BuGeRed buu in BuGeReds.Marked())
+            {
+                Console.WriteLine(buu.ToString());
+
+            }
+
+            //foreach (BuGeRed buu in BuGeReds.Sequence(1, 2))
+            //{
+            //    Console.WriteLine(buu.ToString());
+
+            //}
+
+            return new char();
+        }
+
 
 
         /*
@@ -131,7 +150,7 @@ namespace Pixdata
             return BuGeRedMessage;
         }
         */
-        
+
 
         // Create final Bitmap where; first BuGeRed is of base color, followed by message colors, rest is base color
         public Bitmap? CreateBitmap(List<BuGeRed> messageColors, int height, int width)
@@ -143,12 +162,27 @@ namespace Pixdata
             int totalpixelcount = height * width;
 
             BuGeRedCollection bgrcoll = new BuGeRedCollection();
-            
+                        
+            Color basecol = BaseColor.ToColor();
+            BuGeRed endof = new BuGeRed( Color.FromArgb(basecol.A -2, basecol.R, basecol.G, basecol.B));
+
+            messageColors.Insert(0, new BuGeRed(color));
+            //TODO fix double lists
+            // End of msg is base color with Alpha minus 2
+            messageColors.Add(endof);
+
             // First pixel is of base color
-            bgrcoll.SetFirst( new BuGeRed(color));
+            //bgrcoll.SetFirst( new BuGeRed(color));
+
+            // second pixel has number of chars, not BuGeReds
+            //bgrcoll.SetSecond(new BuGeRed(color));
+            // The binary word 1 1 1 1 1 1 1 1 is equivalent to 1×128 + 1×64 + 1×32 + 1×16 + 1×8 + 1×4 + 1×2 + 1×1 = 255
+
             // Followed by messages colors
-            bgrcoll.Add(messageColors);
+            //bgrcoll.Add(messageColors);
             
+            //Add last color with alpha minus 2 to denote end of message
+
             // Checks
             if (totalpixelcount < bgrcoll.Count)
                 return null;
@@ -157,18 +191,20 @@ namespace Pixdata
             if (totalpixelcount > bgrcoll.Count)
             {
                 // we need filling with base color
-                int fillcount = totalpixelcount - bgrcoll.Count;
+                int fillcount = totalpixelcount - messageColors.Count;
                 List<BuGeRed> filling = new List<BuGeRed>(fillcount);
                 //for (int i = 0; i < fillcount; i++)
                 //{
                     filling.AddRange(Enumerable.Repeat(BaseColor, fillcount));
                 //}
                 // Fill rest with base color
-                bgrcoll.Add(filling);
+                //bgrcoll.Add(filling);
+                messageColors.AddRange(filling);
             }
-            
 
-            Bitmap bmp = bgrcoll.GetBitmapFromBuGeRedList(width, height);
+
+            //Bitmap bmp = bgrcoll.GetBitmapFromBuGeRedList(width, height);
+            Bitmap bmp = bgrcoll.CreateBitmapFromBuGeRedList(messageColors, width, height);
             return bmp;
         }
         

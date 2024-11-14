@@ -191,6 +191,36 @@ namespace Pixdata
             return resultBitmap;
         }
 
+        public Bitmap CreateBitmapFromBuGeRedList(List<BuGeRed> bgrlist , int width, int height)
+        {
+            Bitmap resultBitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+
+            BitmapData resultData = resultBitmap.LockBits(new Rectangle(0, 0,
+                        resultBitmap.Width, resultBitmap.Height),
+                        ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+
+            byte[] resultBuffer = new byte[resultData.Stride * resultData.Height];
+
+            using (MemoryStream memoryStream = new MemoryStream(resultBuffer))
+            {
+                memoryStream.Position = 0;
+                BinaryWriter binaryWriter = new BinaryWriter(memoryStream);
+
+                foreach (BuGeRed pixel in bgrlist)
+                {
+                    binaryWriter.Write(pixel.ToBytes());
+                }
+
+                binaryWriter.Close();
+            }
+
+            Marshal.Copy(resultBuffer, 0, resultData.Scan0, resultBuffer.Length);
+            resultBitmap.UnlockBits(resultData);
+
+            return resultBitmap;
+        }
+
+
         public int Count => pixelList.Count;
         public BuGeRed this[int index]
         {
@@ -200,6 +230,11 @@ namespace Pixdata
         public void SetFirst(BuGeRed bgr)
         {
             pixelList.Insert(0, bgr);
+        }
+
+        public void SetSecond(BuGeRed bgr)
+        {
+            pixelList.Insert(1, bgr);
         }
 
         public void Add(List<BuGeRed> list)
@@ -220,7 +255,7 @@ namespace Pixdata
 
             var curr = pixelList?.GetEnumerator().Current;
 
-            if (pixelList?.GetEnumerator().Current.IsFirstFour == null)
+            if (pixelList?.GetEnumerator().Current ==null || pixelList?.GetEnumerator().Current.IsFirstFour == null)
             {
                 yield break;
             }
@@ -304,7 +339,7 @@ namespace Pixdata
             }
         }
 
-        public IEnumerable<BuGeRed> GetFirstSequence()
+        public IEnumerable<BuGeRed> Marked()
         {
             //Range< BuGeRed >
             foreach (BuGeRed bgr in pixelList)

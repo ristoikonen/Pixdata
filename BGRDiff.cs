@@ -85,7 +85,6 @@ namespace Pixdata
 
     public record BGRWord
     {
-
         public BuGeRed First { get; set; }
         public BuGeRed Second { get; set; }
 
@@ -94,11 +93,7 @@ namespace Pixdata
             this.First = first;
             this.Second = second;
         }
-
-     
-
     }
-
 
 
 

@@ -8,27 +8,39 @@ using System.Text;
 //TODO: unite maps
 UsAsciiIMap map = new UsAsciiIMap();
 USACIIMapper asciimapper = new USACIIMapper();
+/*
+BuGeRedCollection bc = new BuGeRedCollection();
+var lista = bc.GetBuGeRedListFromBitmap((Bitmap)Bitmap.FromFile("c:\\temp\\bmpABCa.bmp"));
+*/
+//TODO: fix this , refactor class!
+
+
+BuGeRedCreator cr = new BuGeRedCreator("ABC", Color.Beige);
+var msgList = cr.CreateMessage();
+var bitmap = cr.CreateBitmap(msgList, 10, 50);
+//CreateBitmapFromBuGeRedList
+//TODO: replace bitmap!
+bitmap.Save(@"c:\temp\bmpABCa.bmp");
+
 
 //TODO: streamline BuGeRedCollection, note that BuGeRedCollection's pixelList is read in GetBuGeRedListFromBitmap
 
 BuGeRedCollection BGRColl = new BuGeRedCollection();
 
-var bgrList = BGRColl.GetBuGeRedListFromBitmap(new Bitmap(@"c:\temp\bmpABC.bmp"));
-
-var chrr = asciimapper.GetUSACSII_Character(BGRColl);
+var bgrList = BGRColl.GetBuGeRedListFromBitmap(new Bitmap(@"c:\temp\bmpABCa.bmp"));
 
 
-Console.WriteLine(bgrList[0].Red);
-Console.WriteLine(bgrList[1].Red);
-Console.WriteLine(bgrList[2].Red);
+//var chrr = asciimapper.GetUSACSII_Character(BGRColl);
+
+
 //bgrList[0].Red = (byte)(bgrList[0].Red-1);
-//Console.WriteLine(bgrList[0].Red);
 
-BuGeRedCreator cr = new BuGeRedCreator("ABC", Color.Beige);
-var msgList = cr.CreateMessage();
-var bitmap = cr.CreateBitmap(msgList, 40, 5);
-bitmap.Save(@"c:\temp\bmpABC.bmp");
+BuGeRedCreator cr2 = new BuGeRedCreator("ABC", Color.Beige);
+var msgList2 = cr2.CreateMessage();
+var bitmap2 = cr2.CreateBitmap(msgList2, 10, 50);
 
+//TODO: replace bitmap!
+bitmap2.Save(@"c:\temp\bmpABCa.bmp");
 
 
 Bitmap newBmp = cr.Create("ABC", Color.Beige);
@@ -74,6 +86,9 @@ foreach (BuGeRed buu in bcol)
 Bitmap bmpSmalle = bcol.GetBitmapFromBuGeRedList(newpiclist2.Count / (newpiclist2.Count / 2), newpiclist2.Count / 2);
 bmpSmalle.Save(@"c:\temp\bmpSmall.bmp");
 
+var list = bcol.GetBuGeRedListFromBitmap(bmpSmalle);
+//TODO: fix this , refactor class!
+bcol.pixelList = list;
 
 
 Console.WriteLine("Hello, World!");

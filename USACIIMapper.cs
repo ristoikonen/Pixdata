@@ -125,19 +125,14 @@ namespace Pixdata
             }
 
 
-            
-
             foreach (BuGeRed buu in BuGeReds.Sequence(1, 2))
             {
                 Console.WriteLine(buu.ToString());
 
             }
 
-            
-
             return new char();
         }
-
 
     }
 }
