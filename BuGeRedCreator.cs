@@ -8,25 +8,6 @@ using System.Threading.Tasks;
 
 namespace Pixdata
 {
-    //TODO move inside BuGeRedCollection?
-
-    internal class BuGeRedReader 
-    {
-
-        public BuGeRedReader()
-        {                
-        }
-
-        public BuGeRedReader(Bitmap bmp) {
-            BuGeRedCollection BGRColl = new BuGeRedCollection();
-            var bgrList = BGRColl.GetBuGeRedListFromBitmap(bmp); // new Bitmap(@"c:\temp\ColorDiffs.bmp"));
-
-            int i = 256;
-            byte[] buffer = BitConverter.GetBytes(i);
-            byte[] buffer3 = BitConverter.GetBytes(System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(i));
-        }
-    }
-
     internal class BuGeRedCreator
     {
 
@@ -54,9 +35,10 @@ namespace Pixdata
 
             int modi = 0; bool isfour = true;
 
+            //byte[] buffer3 = BitConverter.GetBytes(System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(i))
 
             // Create colors for message
-            foreach(char ch in embedMessage.ToCharArray())
+            foreach (char ch in embedMessage.ToCharArray())
             {
                 string? zeroes_ones = map.GetBinary(ch) ?? throw new InvalidOperationException($"Cant convert char {ch} to a string of 0's and 1's");
                 // we have 8 as "11110000" so we need to create 2 BuGeReds
@@ -78,69 +60,6 @@ namespace Pixdata
 
             return BuGeRedMessage;
         }
-
-        public char ReadMessage(BuGeRedCollection BuGeReds)
-        {
-            //var firstpix = BuGeReds.First;
-            
-
-            foreach (BuGeRed buu in BuGeReds.Marked())
-            {
-                Console.WriteLine(buu.ToString());
-
-            }
-
-            //foreach (BuGeRed buu in BuGeReds.Sequence(1, 2))
-            //{
-            //    Console.WriteLine(buu.ToString());
-
-            //}
-
-            return new char();
-        }
-
-
-
-        /*
-         * 
-         * 
-         *             /*
-            foreach (char ch in embedMessage.ToCharArray())
-            {
-                string? zeroes_ones = map.GetBinary(ch) ?? throw new InvalidOperationException($"Cant convert char {ch} to a string of 0's and 1's");
-                for (int ix = 0; ix < 2; ix++)
-                {
-                    isfour = (modi++ % 2) == 0;
-                    BuGeRedMessage.Add(new BuGeRed(zeroes_ones));
-                }
-            }
-            */
-        /*
-        public List<BuGeRed> CreateMessage()//string embed, Color color)
-        {
-            UsAsciiIMap map = new UsAsciiIMap();
-            BuGeRedCollection bgrcoll = new BuGeRedCollection();
-
-            List<string> binaries = new List<string>();
-            List<BuGeRed> BuGeRedMessage = new List<BuGeRed>();
-            List<BuGeRed> BuGeRedBase = new List<BuGeRed>();
-            
-            int modi = 0; bool isfour = true;
-
-
-            // Create colors for message
-            foreach (char ch in embedMessage.ToCharArray())
-            {
-                string? zeroes_ones = map.GetBinary(ch) ?? throw new InvalidOperationException($"Cant convert char {ch} to a string of 0's and 1's");
-                for (int ix = 0; ix < 2; ix++)
-                {
-                    isfour = (modi++ % 2) == 0;
-                    BuGeRedMessage.Add(new BuGeRed(zeroes_ones));
-                }
-            }
-            return BuGeRedMessage;
-        }
-        */
 
 
         // Create final Bitmap where; first BuGeRed is of base color, followed by message colors, rest is base color
@@ -184,19 +103,11 @@ namespace Pixdata
                 // we need filling with base color
                 int fillcount = totalpixelcount - messageColors.Count;
                 List<BuGeRed> filling = new List<BuGeRed>(fillcount);
-                //for (int i = 0; i < fillcount; i++)
-                //{
-                    filling.AddRange(Enumerable.Repeat(BaseColor, fillcount));
-                //}
+                filling.AddRange(Enumerable.Repeat(BaseColor, fillcount));
                 // Fill rest with base color
-                //bgrcoll.Add(filling);
                 messageColors.AddRange(filling);
             }
-
-
-            //Bitmap bmp = bgrcoll.GetBitmapFromBuGeRedList(width, height);
-            Bitmap bmp = bgrcoll.CreateBitmapFromBuGeRedList(messageColors, width, height);
-            return bmp;
+            return bgrcoll.CreateBitmapFromBuGeRedList(messageColors, width, height);
         }
         
         
@@ -239,3 +150,61 @@ namespace Pixdata
         }
     }
 }
+
+/*
+ * 
+ *    
+    internal class BuGeRedReaders 
+    {
+
+        public BuGeRedReaders()
+        {                
+        }
+
+        public BuGeRedReaders(Bitmap bmp) {
+            BuGeRedCollection BGRColl = new BuGeRedCollection();
+            var bgrList = BGRColl.GetBuGeRedListFromBitmap(bmp); // new Bitmap(@"c:\temp\ColorDiffs.bmp"));
+
+            int i = 256;
+            byte[] buffer = BitConverter.GetBytes(i);
+            byte[] buffer3 = BitConverter.GetBytes(System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(i));
+        }
+    }
+ *             /*
+    foreach (char ch in embedMessage.ToCharArray())
+    {
+        string? zeroes_ones = map.GetBinary(ch) ?? throw new InvalidOperationException($"Cant convert char {ch} to a string of 0's and 1's");
+        for (int ix = 0; ix < 2; ix++)
+        {
+            isfour = (modi++ % 2) == 0;
+            BuGeRedMessage.Add(new BuGeRed(zeroes_ones));
+        }
+    }
+    */
+/*
+public List<BuGeRed> CreateMessage()//string embed, Color color)
+{
+    UsAsciiIMap map = new UsAsciiIMap();
+    BuGeRedCollection bgrcoll = new BuGeRedCollection();
+
+    List<string> binaries = new List<string>();
+    List<BuGeRed> BuGeRedMessage = new List<BuGeRed>();
+    List<BuGeRed> BuGeRedBase = new List<BuGeRed>();
+
+    int modi = 0; bool isfour = true;
+
+
+    // Create colors for message
+    foreach (char ch in embedMessage.ToCharArray())
+    {
+        string? zeroes_ones = map.GetBinary(ch) ?? throw new InvalidOperationException($"Cant convert char {ch} to a string of 0's and 1's");
+        for (int ix = 0; ix < 2; ix++)
+        {
+            isfour = (modi++ % 2) == 0;
+            BuGeRedMessage.Add(new BuGeRed(zeroes_ones));
+        }
+    }
+    return BuGeRedMessage;
+}
+*/
+

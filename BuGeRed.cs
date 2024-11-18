@@ -41,6 +41,7 @@ namespace Pixdata
         }
 
 
+
         /// <summary>
         /// Init from string
         /// </summary>
@@ -151,14 +152,9 @@ namespace Pixdata
             int blue = Convert.ToInt32(this.Blue);
             return string.Format($"R:{red} G:{green} B:{blue} A:{alpha} IsFirstFour = {IsFirstFour}");
         }
-        /*
-        public static BuGeRed operator + (BuGeRed b1, BuGeRed x)
-        {
-            return new BuGeRed(new byte[] { (byte)((byte)b1.Blue + x.Blue), (byte)((byte)b1.Green + x.Green), (byte)((byte)b1.Red + x.Red), (byte)((byte)b1.Alpha - x.Alpha) });
-        }
-        */
+
         // Note Alpha is deducted and IsFirstFour get its value from addme ; added BuGeRed record
-        // TODO: what if rgb is 255
+        // TODO: what if rgb is 255 - add rule (max 253) to start checks of original Bitmap validation!
         public static BuGeRed operator + (BuGeRed bgr, BuGeRed addme)
         {
 

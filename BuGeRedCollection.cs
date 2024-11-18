@@ -12,7 +12,7 @@ using System.Collections;
 
 namespace Pixdata
 {
-    public class BuGeRedCollection : IEnumerable//, IEnumerable<PixelBlock>
+    public class BuGeRedCollection : IEnumerable
     {
         public List<BuGeRed> pixelList { get; set; }
         private int top = 0;
@@ -21,8 +21,7 @@ namespace Pixdata
         {
             pixelList = new List<BuGeRed>();
         }
-        //int width, int height
-        //Bitmap sourceImage
+
         public List<BuGeRed> GetBuGeRedListFromBitmap(Bitmap sourceImage)
         {
             const int bits_per_pixel = 4;
@@ -73,13 +72,7 @@ namespace Pixdata
 
                             // is it start or end part
                             isfour = (modi++ % 2) == 0;
-                            //add message to base color
-                           // BuGeRed based_on_base = BaseColor;
-                           // based_on_base += new BuGeRed(zeroes_ones, isfour);
-                           // BuGeRedMessage.Add(based_on_base);
-
                             BuGeRed pixel = new BuGeRed(binaryReader.ReadBytes(bits_per_pixel), isfour);
-                            //pixel.BGRDiff.BasePixel = firstpixel ?? new BuGeRed(Color.Black);
                             pixelList.Add(pixel);
                         }
 
@@ -129,35 +122,8 @@ namespace Pixdata
 
             return resultBuffer;
         }
-        /*
-        public Bitmap GetBitmapFromBuGeRedList(List<BuGeRed> pixelList, int width, int height)
-        {
-            Bitmap resultBitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-
-            BitmapData resultData = resultBitmap.LockBits(new Rectangle(0, 0,
-                        resultBitmap.Width, resultBitmap.Height),
-                        ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-
-            byte[] resultBuffer = new byte[resultData.Stride * resultData.Height];
 
 
-            Marshal.Copy(resultData.Scan0, resultBuffer, 0, resultBuffer.Length);
-
-            //Marshal.Copy(resultBuffer, 0, resultData.Scan0, resultBuffer.Length);
-            //resultBitmap.UnlockBits(resultData);
-
-            using (var ms = new MemoryStream(resultBuffer))
-            {
-                resultBitmap = new Bitmap(ms);
-            }
-
-            return resultBitmap;
-        }
-        */
-
-
-
-        //(List<BuGeRed> pixelList,
         public Bitmap GetBitmapFromBuGeRedList( int width, int height)
         {
             Bitmap resultBitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
@@ -218,6 +184,7 @@ namespace Pixdata
 
 
         public int Count => pixelList.Count;
+
         public BuGeRed this[int index]
         {
             get { return pixelList[index]; }
@@ -292,10 +259,6 @@ namespace Pixdata
                 }
                 yield return bgr;
             }
-
-            //if (firstNumber <= pixelList?.Count ||
-            //    lastNumber <= pixelList?.Count )
-            //pixelList?.Take(
         }
 
         public IEnumerable<BuGeRed> TopN(int itemsFromTop)
@@ -350,31 +313,7 @@ namespace Pixdata
                 }
                 yield break;
             }
-
-            //if (firstNumber <= pixelList?.Count ||
-            //    lastNumber <= pixelList?.Count )
-            //pixelList?.Take(
         }
-
-
-        //object IEnumerator.Current
-        //=> pixelList.Data;
-
-        //IEnumerator<PixelBlock> IEnumerable<PixelBlock>.GetEnumerator()
-        //{
-        //    while (pixelList < 10)
-        //        yield return index++;
-
-        //    foreach (BuGeRed bgr pixelList.GetEnumerator()
-        //    yield return "object";
-        //    yield return "byte";
-
-        //    foreach (BuGeRed bgr in ((IEnumerable)pixelList).GetEnumerator())
-        //    { 
-
-        //    }
-        //    throw new NotImplementedException();
-        //}
     }
 }
 
