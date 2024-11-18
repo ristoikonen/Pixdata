@@ -41,6 +41,48 @@ namespace Pixdata
             foreach (char ch in embedMessage.ToCharArray())
             {
                 string? zeroes_ones = map.GetBinary(ch) ?? throw new InvalidOperationException($"Cant convert char {ch} to a string of 0's and 1's");
+                Console.WriteLine($"{ch} => {zeroes_ones}");
+                // we have 8 as "11110000" so we need to create 2 BuGeReds
+                for (int ix = 0; ix < 2; ix++)
+                {
+                    //int readix = isfour ? 0 : bits_per_pixel;
+                    //var part_of_bitstring = zeroes_ones.Substring(readix, bits_per_pixel);
+
+                    // is it start or end part
+                    isfour = (modi++ % 2) == 0;
+                    //add message to base color
+                    BuGeRed based_on_base = BaseColor;
+                    //TODO: fix operators based_on_base
+                    var newcol = new BuGeRed(zeroes_ones, isfour);
+                    based_on_base += newcol;
+                    based_on_base.IsFirstFour = isfour;
+                    BuGeRedMessage.Add(based_on_base);
+                }
+            }
+
+            return BuGeRedMessage;
+        }
+
+
+        public List<BuGeRed> CreateMessageOld()//string embed, Color color)
+        {
+            const int bits_per_pixel = 4;
+            UsAsciiIMap map = new UsAsciiIMap();
+            BuGeRedCollection bgrcoll = new BuGeRedCollection();
+
+            List<string> binaries = new List<string>();
+            List<BuGeRed> BuGeRedMessage = new List<BuGeRed>();
+            List<BuGeRed> BuGeRedBase = new List<BuGeRed>();
+
+            int modi = 0; bool isfour = true;
+
+            //byte[] buffer3 = BitConverter.GetBytes(System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(i))
+
+            // Create colors for message
+            foreach (char ch in embedMessage.ToCharArray())
+            {
+                string? zeroes_ones = map.GetBinary(ch) ?? throw new InvalidOperationException($"Cant convert char {ch} to a string of 0's and 1's");
+                Console.WriteLine($"{ch} => {zeroes_ones}");
                 // we have 8 as "11110000" so we need to create 2 BuGeReds
                 for (int ix = 0; ix < 2; ix++)
                 {
@@ -61,7 +103,6 @@ namespace Pixdata
             return BuGeRedMessage;
         }
 
-
         // Create final Bitmap where; first BuGeRed is of base color, followed by message colors, rest is base color
         public Bitmap? CreateBitmap(List<BuGeRed> messageColors, int height, int width)
         {
@@ -74,12 +115,15 @@ namespace Pixdata
             BuGeRedCollection bgrcoll = new BuGeRedCollection();
                         
             Color basecol = BaseColor.ToColor();
-            BuGeRed endof = new BuGeRed( Color.FromArgb(basecol.A, basecol.R - 2, basecol.G, basecol.B));
+            byte newred = (byte)(basecol.R - 2);
+            byte[] endcolor = new byte[4] { (byte)(basecol.B), (byte)(basecol.G), (byte)(basecol.R - 2), (byte)(basecol.A) };
+            //Color c = Color.FromArgb(basecol.A, newred, basecol.G, basecol.B);
+            BuGeRed endofmsg = new BuGeRed(endcolor);
 
             messageColors.Insert(0, new BuGeRed(color));
             //TODO fix double lists
             // End of msg is base color with Alpha minus 2
-            messageColors.Add(endof);
+            messageColors.Add(endofmsg);
 
             // First pixel is of base color
             //bgrcoll.SetFirst( new BuGeRed(color));

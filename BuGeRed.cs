@@ -20,10 +20,10 @@ namespace Pixdata
 
         public BuGeRed(Color c)
         {
-            Blue = c.B;
-            Green = c.G;
-            Red = c.R;
-            Alpha = c.A;
+            this.Blue = c.B;
+            this.Green = c.G;
+            this.Red = c.R;
+            this.Alpha = c.A;
         }
 
         /// <summary>
@@ -84,10 +84,17 @@ namespace Pixdata
             }
             else
             {
+                /*
+                this.Red = (byte)int.Parse(bitstring.Substring(4, 1));
+                this.Green = (byte)int.Parse(bitstring.Substring(5, 1));
+                this.Blue = (byte)int.Parse(bitstring.Substring(6, 1));
+                this.Alpha = (byte)int.Parse(bitstring.Substring(7, 1));
+                */
                 this.Blue = (byte)int.Parse(bitstring.Substring(4, 1));
                 this.Green = (byte)int.Parse(bitstring.Substring(5, 1));
                 this.Red = (byte)int.Parse(bitstring.Substring(6, 1));
                 this.Alpha = (byte)int.Parse(bitstring.Substring(7, 1));
+                
                 IsFirstFour = firstFour;
             }
         }
@@ -143,14 +150,27 @@ namespace Pixdata
             return Color.FromArgb(alpha,red, green, blue);
         }
 
+
+        public String Difference(BuGeRed basebgr)
+        {
+            int alpha = Convert.ToInt32(basebgr.Alpha - this.Alpha);
+            int red = Convert.ToInt32(basebgr.Red - this.Red);
+            int green = Convert.ToInt32(basebgr.Green - this.Green);
+            int blue = Convert.ToInt32(basebgr.Blue - this.Blue);
+            string test = $"{Math.Abs(green)}{Math.Abs(blue)}{Math.Abs(red)}{Math.Abs(alpha)}";
+            return string.Format($"{Math.Abs(blue)}{Math.Abs(green)}{Math.Abs(red)}{Math.Abs(alpha)}");
+        }
+
         public override string ToString()
         {
-            string s1 = "";
             int alpha = Convert.ToInt32(this.Alpha);
-            int red = Convert.ToInt32(this.Blue);
+            int red = Convert.ToInt32(this.Red);
             int green = Convert.ToInt32(this.Green);
             int blue = Convert.ToInt32(this.Blue);
-            return string.Format($"R:{red} G:{green} B:{blue} A:{alpha} IsFirstFour = {IsFirstFour}");
+            //  IsFirstFour = {IsFirstFour}
+            //TODO test this!
+            return string.Format($"{Math.Abs(green)}{Math.Abs(blue)}{Math.Abs(red)}{Math.Abs(alpha)}");
+            //return string.Format($"{Math.Abs(red)},{Math.Abs(green)},{Math.Abs(blue)},{Math.Abs(alpha)}");
         }
 
         // Note Alpha is deducted and IsFirstFour get its value from addme ; added BuGeRed record

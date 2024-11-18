@@ -9,6 +9,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Collections;
+using System.Xml.Linq;
 
 namespace Pixdata
 {
@@ -170,7 +171,8 @@ namespace Pixdata
 
                 foreach (BuGeRed pixel in bgrlist)
                 {
-                    binaryWriter.Write(pixel.ToBytes());
+                    var px = pixel.ToBytes();
+                    binaryWriter.Write(px);
                 }
 
                 binaryWriter.Close();
@@ -220,17 +222,20 @@ namespace Pixdata
 
             if (pixelList?.GetEnumerator().Current ==null || pixelList?.GetEnumerator().Current.IsFirstFour == null)
             {
-                yield break;
+                //break;
             }
-            if (pixelList?.GetEnumerator().Current.IsFirstFour.Value != true)
+            if (pixelList?.GetEnumerator().Current?.IsFirstFour.Value != true)
             {
                 int? nxt = pixelList?.IndexOf(pixelList?.GetEnumerator().Current);
-                var nextBGRA = pixelList[nxt.Value];
-                yield return pixelList[nxt.Value];
+                if (nxt is not null && nxt != -1)
+                {
+                    var nextBGRA = pixelList[nxt.Value];
+                    yield return pixelList[nxt.Value];
+                }
             }
             if (pixelList?.GetEnumerator().Current.IsFirstFour.Value != false)
             {
-                yield break;
+                //yield break;
             }
             /*
             yield return {
