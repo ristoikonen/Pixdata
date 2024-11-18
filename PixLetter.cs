@@ -38,52 +38,10 @@ namespace Pixdata
         }
 
 
-        private void Read4Pixels(BuGeRed basePixel, BuGeRedLetter Pixels, int index)
-        {
-            //BuGeRed basePixel;
-            switch (index)
-            {
-                case 1:
-                    BGRDiff d1 = new BGRDiff(Pixels.Pixel1, basePixel);
-                    break;
-                case 2:
-                    BGRDiff d2 = new BGRDiff(Pixels.Pixel2, basePixel);
-                    break;
-                case 3:
-                    BGRDiff d3 = new BGRDiff(Pixels.Pixel3, basePixel);
-                    break;
-                case 4:
-                    BGRDiff d4 = new BGRDiff(Pixels.Pixel4, basePixel);
-                    break;
-                default:
-                    // Default stuff
-                    break;
-            }
-        }
 
 
-        private void ReadItem(BuGeRed basePixel, BuGeRed Pixel, int index)
-        {
-            //BuGeRed basePixel;
-            switch (index)
-            {
-                case 1:
-                    BGRDiff d1 = new BGRDiff(Pixel, basePixel);
-                    break;
-                case 2:
-                    BGRDiff d2 = new BGRDiff(Pixel, basePixel);
-                    break;
-                case 3:
-                    BGRDiff d3 = new BGRDiff(Pixel, basePixel);
-                    break;
-                case 4:
-                    BGRDiff d4 = new BGRDiff(Pixel, basePixel);
-                    break;
-                default:
-                    // Default stuff
-                    break;
-            }
-        }
+
+
 
 
 

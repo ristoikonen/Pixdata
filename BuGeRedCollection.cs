@@ -52,8 +52,6 @@ namespace Pixdata
                     if (isfirstpixel && memoryStream.Position == 0)
                     {
                         firstpixel = new BuGeRed(binaryReader.ReadBytes(4));
-                        BGRDiff bgrdiff = new BGRDiff(firstpixel, firstpixel);
-                        firstpixel.BGRDiff = bgrdiff;
                         //firstpixel.IsFirstFour = true;
                         pixelList.Add(firstpixel);
                         isfirstpixel = false;
@@ -81,8 +79,6 @@ namespace Pixdata
                            // BuGeRedMessage.Add(based_on_base);
 
                             BuGeRed pixel = new BuGeRed(binaryReader.ReadBytes(bits_per_pixel), isfour);
-                            BGRDiff bgrdiff = new BGRDiff(pixel, firstpixel);
-                            pixel.BGRDiff = bgrdiff;
                             //pixel.BGRDiff.BasePixel = firstpixel ?? new BuGeRed(Color.Black);
                             pixelList.Add(pixel);
                         }

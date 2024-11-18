@@ -24,16 +24,7 @@ namespace Pixdata
             int i = 256;
             byte[] buffer = BitConverter.GetBytes(i);
             byte[] buffer3 = BitConverter.GetBytes(System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(i));
-
-            USACIIMapper mapper = new USACIIMapper();
-            //PixelBlock pixRow = new PixelBlock { Pix1 = new BuGeRed(new byte[] { 0, 0, 0, 1 }) };
-            //PixelBlock pixCol = new PixelBlock { Pix1 = new BuGeRed(new byte[] { 0, 0, 1, 0 }) };
-            //mapper.GetUSACSII_Character(pixRow, pixCol);
-            //mapper.GetUSACSII_Character
         }
-
-
-
     }
 
     internal class BuGeRedCreator
@@ -164,7 +155,7 @@ namespace Pixdata
             BuGeRedCollection bgrcoll = new BuGeRedCollection();
                         
             Color basecol = BaseColor.ToColor();
-            BuGeRed endof = new BuGeRed( Color.FromArgb(basecol.A -2, basecol.R, basecol.G, basecol.B));
+            BuGeRed endof = new BuGeRed( Color.FromArgb(basecol.A, basecol.R - 2, basecol.G, basecol.B));
 
             messageColors.Insert(0, new BuGeRed(color));
             //TODO fix double lists

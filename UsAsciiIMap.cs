@@ -12,6 +12,7 @@ namespace Pixdata
     internal  class UsAsciiIMap
     {
         // var sevenItems = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 };0x00 0xA1,
+        // const string all_chars = @" !\"#$%&'()*+,-./\r\n0123456789:;<=>?\r\n@ABCDEFGHIJKLMNO\r\nPQRSTUVWXYZ[\\]^_\r\n`abcdefghijklmno\r\npqrstuvwxyz{|}~\r\n";
 
         Dictionary<char, string> map = new Dictionary<char, string>();
         private string ToHex(int val)

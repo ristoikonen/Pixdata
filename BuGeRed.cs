@@ -9,69 +9,6 @@ using System.Threading.Tasks;
 namespace Pixdata
 {
 
-
-    /// <summary>
-    /// USACII data sink made of BuGeRed's with char
-    /// </summary>
-    public struct PixelBlockWithChar
-    {
-        // 1=b4	2=b3,3=b2, 4=b1
-        public BuGeRed? Pix1 { get; set; }
-        public int Row { get; set; }
-        public Char Character { get; set; }
-    }
-
-
-    /// <summary>
-    /// USACII data sink made of BuGeRed's
-    /// </summary>
-    public struct PixelBlock
-    {
-        // 1=b4	2=b3,3=b2, 4=b1,5=col1,6=col2,71=col3
-        public BuGeRed? Pix1 { get; set; }
-        public BuGeRed? Pix2 { get; set; }
-        public BuGeRed? Pix3 { get; set; }
-        public BuGeRed? Pix4 { get; set; }
-        public BuGeRed? Pix5 { get; set; }
-        public BuGeRed? Pix6 { get; set; }
-        public BuGeRed? Pix7 { get; set; }
-        //int rowno;
-        //int colnono;
-        public int Row { get; set; }
-        public int Column { get; set; }
-    }
-
-
-    public struct BuGeRedWord
-    {
-        public BuGeRedWord(BuGeRed baseline)
-        {
-            this.Baseline = baseline;
-        }
-        public BuGeRed? Baseline { get; set; }
-        public BuGeRed? Pix1 { get; set; }
-        public BuGeRed? Pix2 { get; set; }
-        public BuGeRed? Pix3 { get; set; }
-        public BuGeRed? Pix4 { get; set; }
-        public BuGeRed? Pix5 { get; set; }
-        public BuGeRed? Pix6 { get; set; }
-        public BuGeRed? Pix7 { get; set; }
-        public BuGeRed? Pix8 { get; set; }
-        //int rowno;
-        //int colnono;
-        public char Character { get; set; }
-
-        public char GetCharacter ()
-        { 
-            UsAsciiIMap mapper = new UsAsciiIMap();
-            
-            //mapper.ConvertToChar()
-            return this.Character;
-        }
-        
-    }
-
-
     public record BuGeRed
     {
 
@@ -79,19 +16,7 @@ namespace Pixdata
         public byte Green;
         public byte Red;
         public byte Alpha;
-        public BGRDiff BGRDiff;
         public bool? IsFirstFour = null;
-
-        /*
-        public BuGeRed(byte[] colorsWithAlpha,bool? firstFour)
-        {
-            Blue = colorsWithAlpha[0];
-            Green = colorsWithAlpha[1];
-            Red = colorsWithAlpha[2];
-            Alpha = colorsWithAlpha[3];
-            IsFirstFour = firstFour;
-        }
-        */
 
         public BuGeRed(Color c)
         {
@@ -107,7 +32,6 @@ namespace Pixdata
         /// <param name="copyMe"></param>
         public BuGeRed(BuGeRed copyMe)
         {
-
             this.Blue = copyMe.Blue; this.Green = copyMe.Green;
             this.Red = copyMe.Red; this.Alpha = copyMe.Alpha; this.IsFirstFour = copyMe.IsFirstFour;
         }
@@ -116,8 +40,6 @@ namespace Pixdata
             return new byte[] { this.Blue, this.Green, this.Red, this.Alpha };
         }
 
-
-        // TODO: fix this four/eight thingy!!
 
         /// <summary>
         /// Init from string
@@ -187,14 +109,6 @@ namespace Pixdata
         /// Init from byte array
         /// </summary>
         /// <param name="barr"></param>
-        //public BuGeRed(byte[] barr)
-        //{
-        //    this.Blue = barr[0];
-        //    this.Green = barr[1];
-        //    this.Red = barr[2];
-        //    this.Alpha = barr[3];
-        //}
-
         public BuGeRed(byte[] barr, bool? firstFour)
         {
             this.Blue = barr[0];
@@ -204,6 +118,10 @@ namespace Pixdata
             IsFirstFour = firstFour;
         }
 
+        /// <summary>
+        /// Init from byte array
+        /// </summary>
+        /// <param name="barr"></param>
         public BuGeRed(byte[] barr)
         {
             this.Blue = barr[0];

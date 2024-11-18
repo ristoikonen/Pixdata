@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Pixdata
 {
-    public class USACIIMapper
+    public class USACIIMapperTest
     {
-        //const string all_chars = @" !\"#$%&'()*+,-./\r\n0123456789:;<=>?\r\n@ABCDEFGHIJKLMNO\r\nPQRSTUVWXYZ[\\]^_\r\n`abcdefghijklmno\r\npqrstuvwxyz{|}~\r\n";
+        
         const string CharCol1 = @" !""""#$%&'()*+,-./";
 
 

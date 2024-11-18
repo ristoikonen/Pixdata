@@ -12,7 +12,7 @@ using System.IO;
 
 namespace Pixdata
 {
-    internal class BGRCollection
+    internal class BGRCollectionb
     {
         List<BuGeRed> pixelList = new List<BuGeRed>();
 
@@ -44,16 +44,14 @@ namespace Pixdata
                     if (isfirstpixel && memoryStream.Position == 0)
                     {
                         firstpixel = new BuGeRed(binaryReader.ReadBytes(4));
-                        BGRDiff bgrdiff = new BGRDiff(firstpixel, firstpixel);
-                        firstpixel.BGRDiff = bgrdiff;
+                        
                         pixelList.Add(firstpixel);
                         isfirstpixel = false;
                     }
                     else
                     {
                         BuGeRed pixel = new BuGeRed(binaryReader.ReadBytes(4));
-                        BGRDiff bgrdiff = new BGRDiff(pixel, firstpixel);
-                        pixel.BGRDiff = bgrdiff;
+                        
                         //pixel.BGRDiff.BasePixel = firstpixel ?? new BuGeRed(Color.Black);
                         pixelList.Add(pixel);
                     }

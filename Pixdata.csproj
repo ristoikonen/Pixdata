@@ -8,7 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="BGRCollection.cs" />
+    <Compile Remove="BGRDiff.cs" />
     <Compile Remove="Iterator.cs" />
+    <Compile Remove="PixLetter.cs" />
+    <Compile Remove="USACIIMapper.cs" />
   </ItemGroup>
 
   <ItemGroup>
