@@ -12,18 +12,31 @@ namespace Pixdata
     {
 
         private string embedMessage;
-        private Color color;
-        BuGeRed BaseColor;
+        //private Color color;
+        private BuGeRed BaseColor;
+        private int h;
+        private int w;
 
-        public BuGeRedCreator(string embedMessage, Color color) 
+        public BuGeRedCreator(string embedMessage, Color color, int h, int w) 
         { 
             this.embedMessage = embedMessage;
-            this.color = color;
+            //this.color = color;
             this.BaseColor = new BuGeRed(color);
+            this.h = h;
+            this.w = w;
+        }
+
+        public BuGeRedCreator(string embedMessage, int R, int G, int B, int A , int h, int w)
+        {
+            this.embedMessage = embedMessage;
+            //this.color = Color.FromArgb(A, R, G, B);
+            this.BaseColor = new BuGeRed(Color.FromArgb(A, R, G, B));
+            this.h = h;
+            this.w = w;
         }
 
 
-        public List<BuGeRed> CreateMessage()//string embed, Color color)
+        public List<BuGeRed> CreateMessage()
         {
             const int bits_per_pixel = 4;
             UsAsciiIMap map = new UsAsciiIMap();
@@ -104,23 +117,22 @@ namespace Pixdata
         }
 
         // Create final Bitmap where; first BuGeRed is of base color, followed by message colors, rest is base color
-        public Bitmap? CreateBitmap(List<BuGeRed> messageColors, int height, int width)
+        public Bitmap? CreateBitmap(List<BuGeRed> messageColors)//, int height, int width)
         {
 
-            if (height <= 0 || width <= 0)
+            if (h <= 0 || w <= 0)
                 return null;
 
-            int totalpixelcount = height * width;
+            int totalpixelcount = h * w;
 
             BuGeRedCollection bgrcoll = new BuGeRedCollection();
                         
             Color basecol = BaseColor.ToColor();
             byte newred = (byte)(basecol.R - 2);
             byte[] endcolor = new byte[4] { (byte)(basecol.B), (byte)(basecol.G), (byte)(basecol.R - 2), (byte)(basecol.A) };
-            //Color c = Color.FromArgb(basecol.A, newred, basecol.G, basecol.B);
             BuGeRed endofmsg = new BuGeRed(endcolor);
 
-            messageColors.Insert(0, new BuGeRed(color));
+            messageColors.Insert(0, new BuGeRed(this.BaseColor)); // color));
             //TODO fix double lists
             // End of msg is base color with Alpha minus 2
             messageColors.Add(endofmsg);
@@ -151,7 +163,7 @@ namespace Pixdata
                 // Fill rest with base color
                 messageColors.AddRange(filling);
             }
-            return bgrcoll.CreateBitmapFromBuGeRedList(messageColors, width, height);
+            return bgrcoll.CreateBitmapFromBuGeRedList(messageColors, w, h);
         }
         
         
