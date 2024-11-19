@@ -11,6 +11,8 @@ class Program
         int ix = 0;
         StringBuilder builder = new();
 
+        CreateBitmap("ABC",@"c:\temp\test.bmp", 10, 60, new BuGeRed(Color.Beige));
+
 
         var fileOption = new Option<string?>(
             name: "-d",
@@ -34,12 +36,12 @@ class Program
         rootCommand.AddOption(fileOption2);
         rootCommand.AddOption(fileOption3);
 
-        rootCommand.SetHandler((file) =>
+        rootCommand.SetHandler((file, file2, file3) =>
         {
             //ReadFile(file!);
-            Console.WriteLine($"de hasdler {file}");
+            Console.WriteLine($"hasdler {file} {file2}");
         },
-            fileOption);
+            fileOption, fileOption2, fileOption3);
 
         await rootCommand.InvokeAsync(args);
         /*
@@ -155,4 +157,21 @@ class Program
         // Return a success code.
         return 0;
     }
+
+    private static void CreateBitmap(string embedMsg, string bmpFileName, int w, int h,  BuGeRed bgrColor)
+    {
+        
+        if (embedMsg != null && (embedMsg.Length * 4) + 2 < (w*h) )
+        { 
+            //var fullPath = Path.GetFullPath(bmpFileName);
+            var ex = Path.Exists(bmpFileName);
+
+            BuGeRedCreator cr = new BuGeRedCreator(embedMsg, (int)(bgrColor.Red), (int)bgrColor.Green, (int)bgrColor.Blue, (int)bgrColor.Alpha,h, w);
+            var msgList = cr.CreateMessage();
+            var bitmap = cr.CreateBitmap(msgList);
+            bitmap.Save(bmpFileName);
+        }
+    }
+
+
 }
