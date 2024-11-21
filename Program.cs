@@ -5,6 +5,12 @@ using System.Text;
 using System.CommandLine;
 class Program
 {
+
+    static void HandleCommand(string bmpPath, string decodePath, string codePath, string color )
+    {
+        // main code here!
+    }
+
     static async Task<int> Main(string[] args)
     {
 
@@ -14,34 +20,41 @@ class Program
         CreateBitmap("ABC",@"c:\temp\test.bmp", 10, 60, new BuGeRed(Color.Beige));
 
 
-        var fileOption = new Option<string?>(
+        var encodeOption = new Option<string?>(
             name: "-d",
             description: "De");
 
-        var fileOption2 = new Option<string?>(
+        var decodeOption = new Option<string?>(
             name: "-e",
             description: "Emb");
 
-        var fileOption3 = new Option<string?>(
+        var colorOption = new Option<string?>(
             name: "-c", 
             description: "Col");
+
+        var heightOption = new Option<string?>(
+            name: "h",
+            description: "Height");
+
+        var widthOption = new Option<string?>(
+            name: "w",
+            description: "Width");
 
         var rootCommand = new RootCommand("Sample app for System.CommandLine");
         //var sub1Command = new Command("-e", "First-level subcommand");
         //rootCommand.Add(sub1Command);
-        //var sub1aCommand = new Command("-c", "First level subcommand");
-        //rootCommand.Add(sub1aCommand);
 
-        rootCommand.AddOption(fileOption);
-        rootCommand.AddOption(fileOption2);
-        rootCommand.AddOption(fileOption3);
+        rootCommand.AddOption(encodeOption);
+        rootCommand.AddOption(decodeOption);
+        rootCommand.AddOption(colorOption);
 
-        rootCommand.SetHandler((file, file2, file3) =>
+        rootCommand.SetHandler((encode, decode, color, height, width) =>
         {
-            //ReadFile(file!);
-            Console.WriteLine($"hasdler {file} {file2}");
+            // TODO continue HandleCommand!
+            //HandleCommand(args[0], encode,  , , );
+            Console.WriteLine($"hasdler {args[0]} {encode} {decode}");
         },
-            fileOption, fileOption2, fileOption3);
+            encodeOption, decodeOption, colorOption, heightOption, widthOption);
 
         await rootCommand.InvokeAsync(args);
         /*
@@ -58,7 +71,7 @@ class Program
 /*
         builder.AppendLine(
             "PIXDATA" + Environment.NewLine +
-            "Description:" + Environment.NewLine + "\t" + "Embed and decode ASCII encoded string into a single color Bitmap" + Environment.NewLine +
+                "Description:" + Environment.NewLine + "\t" + "Embed and decode ASCII encoded string into a single color Bitmap" + Environment.NewLine +
             "Usage:" + Environment.NewLine + "\t" + "pixdata image.bmp [options]" + Environment.NewLine +
             "Options:" + Environment.NewLine + "\t" + "--c color <B, G, R, A> <Brown>" + Environment.NewLine +
             "\t" + "--e embed <inmessage.txt>" + Environment.NewLine +
